@@ -57,10 +57,8 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		public void handleMessage(Message msg) {
 			Log.d("Tetris", "There is event");
 			if (gameState == GM_PLAY) {
-				mHandler.removeMessages(0);
 				tetris.moveDown();
-				gameSpeed = 700 - (tetris.getScore() / 10000);
-				mHandler.removeMessages(0);
+				gameSpeed = 700 - (tetris.getScore() / 100000);
 				mHandler.sendEmptyMessageDelayed(0, gameSpeed);
 			}
 		}
@@ -133,7 +131,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 				R.drawable.start);
 		mGameOver = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.gameover);
-		
+
 		mTile[0] =  BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.black);
 		mTile[1] = BitmapFactory.decodeResource(context.getResources(),
@@ -212,23 +210,23 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
 						startX+200,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-		canvas.drawBitmap(downArrow, null,
+		canvas.drawBitmap(bottomArrow, null,
 				new Rect(startX+250,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
 						startX+450,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-		canvas.drawBitmap(rotateArrow, null,
+		canvas.drawBitmap(rightArrow, null,
 				new Rect(startX+500,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
 						startX+700,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-		canvas.drawBitmap(rightArrow, null,
+		canvas.drawBitmap(rotateArrow, null,
 				new Rect(startX+750,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
 						startX+950,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
 
-		canvas.drawBitmap(bottomArrow, null,
+		canvas.drawBitmap(downArrow, null,
 				new Rect(startX+750,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT - 200,
 						startX+950,
@@ -345,7 +343,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 					event.getX() < startX + 450 &&
 					event.getY() < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
 				if (tetris != null) {
-					tetris.moveDown();
+					tetris.moveBottom();
 				}
 				return true;
 			}
@@ -355,7 +353,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 					event.getX() < startX + 700 &&
 					event.getY() < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
 				if (tetris != null) {
-					tetris.rotate();
+					tetris.moveRight();
 				}
 				return true;
 			}
@@ -365,7 +363,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 					event.getX() < startX + 950 &&
 					event.getY() < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
 				if (tetris != null) {
-					tetris.moveRight();
+					tetris.rotate();
 				}
 				return true;
 			}
@@ -375,7 +373,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 					event.getX() < startX + 950 &&
 					event.getY() < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT) {
 				if (tetris != null) {
-					tetris.moveBottom();
+					tetris.moveDown();
 				}
 				return true;
 			}
