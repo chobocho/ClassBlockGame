@@ -113,4 +113,9 @@ public class Tetris implements ITetris {
         TetrisLog.d("Registered view!");
         this.observer = observer;
     }
+
+    public boolean isIdleState() { return gameState.isIdleState(); }
+    public boolean isGameOverState() { return gameState.isGameOverState(); }
+    public boolean isPlayState() { return gameState.isPlayState(); }
+    public boolean isPauseState() { return gameState.isPauseState(); }
 }

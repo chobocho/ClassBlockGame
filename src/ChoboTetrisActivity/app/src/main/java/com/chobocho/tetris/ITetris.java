@@ -40,4 +40,9 @@ public interface ITetris {
 
     public int addSore(int score);
 
+    public boolean isIdleState();
+    public boolean isGameOverState();
+    public boolean isPlayState();
+    public boolean isPauseState();
+
 }

@@ -13,9 +13,8 @@ public class TetrisGameOverState extends TetrisGameState {
         this.tetris = tetris;
     }
 
-    public void update() {
-        TetrisLog.d("TetrisGameOverState.update()");
-        tetris.getObserver().updateGameOver();
+    public boolean isGameOverState() {
+        return true;
     }
-
 }
+

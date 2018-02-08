@@ -13,8 +13,7 @@ public class TetrisIdleState extends TetrisGameState {
         TetrisLog.d("TetrisIdleState()");
         this.tetris = tetris;
     }
-    public void update() {
-        TetrisLog.d("TetrisIdleState.update()");
-        tetris.getObserver().updateIdle();
+    public boolean isIdleState() {
+       return true;
     }
 }

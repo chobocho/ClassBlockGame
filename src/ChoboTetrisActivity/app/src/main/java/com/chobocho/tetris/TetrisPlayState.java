@@ -20,11 +20,6 @@ public class TetrisPlayState extends TetrisGameState {
         additionalPoint = 1;
     }
 
-    public void update() {
-       TetrisLog.d("TetrisPlayState.update()");
-       tetris.getObserver().updatePlay();
-    }
-
     public void moveLeft() {
        TetrisLog.d("TetrisPlayState.moveLeft()");
         currentTetrominos.moveLeft();
@@ -94,7 +89,7 @@ public class TetrisPlayState extends TetrisGameState {
     }
 
     public boolean gameOver() {
-        TetrisLog.d("Game over!");
+        TetrisLog.d("Check Game over!");
         return (tetrisBoard.isAcceptable(currentTetrominos) == false);
     }
 
@@ -126,5 +121,9 @@ public class TetrisPlayState extends TetrisGameState {
 
     public Tetrominos getNextTetrominos() {
         return nextTetrominos;
+    }
+
+    public boolean isPlayState() {
+        return true;
     }
 }

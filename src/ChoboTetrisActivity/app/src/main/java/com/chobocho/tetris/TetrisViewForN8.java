@@ -45,10 +45,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	public static final int BLOCK_IMAGE_SIZE = 60;
 
 	public static final int GM_LOADING = 0;
-	public static final int GM_START = 1;
-	public static final int GM_PLAY = 2;
-	public static final int GM_GAME_OVER = 3;
-	public static final int GM_PAUSE = 4;
+	public static final int GM_IDLE = 1;
 	public static final int DELAY = 500;
 
 	int     gameState = GM_LOADING; 
@@ -56,7 +53,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			Log.d("Tetris", "There is event");
-			if (gameState == GM_PLAY) {
+			if (tetris != null && tetris.isPlayState()) {
 				tetris.moveDown();
 				gameSpeed = 700 - (tetris.getScore() / 100000);
 				mHandler.sendEmptyMessageDelayed(0, gameSpeed);
@@ -80,7 +77,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	}
 
 	public void init() {
-		gameState = GM_START;
+		gameState = GM_IDLE;
 	}
 
 	public void setScreenSize(int w, int h) {
@@ -100,27 +97,8 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		tetris.init();
 	}
 
-	public void updateIdle() {
-		Log.d("Tetris", "View.updateIdle()");
-		gameState = GM_START;
-		invalidate();
-	}
-
-	public void updatePlay() {
-		Log.d("Tetris", "View.updatePlay()");
-		gameState = GM_PLAY;
-		invalidate();
-	}
-
-	public void updatePause() {
-		Log.d("Tetris", "View.updatePause()");
-		gameState = GM_PAUSE;
-		invalidate();
-	}
-
-	public void updateGameOver() {
-		Log.d("Tetris", "View.updateGameOver()");
-		gameState = GM_GAME_OVER;
+	public void update() {
+		Log.d("Tetris", "View.update()");
 		invalidate();
 	}
 
@@ -232,8 +210,12 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 						startX+950,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT), null);
 
-		switch (gameState) {
-		case GM_START:
+		if (tetris == null) {
+			Log.d("Tetris", "Tetris is null");
+			return;
+		}
+
+		if (tetris.isIdleState()) {
 			canvas.drawBitmap(mGameStart, 190, 400, null);
 
 			canvas.drawBitmap(playBtn, null,
@@ -241,12 +223,9 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 							startY,
 							startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
 							startY + 200), null);
-			break;
-		case GM_GAME_OVER:
+		} else if (tetris.isGameOverState()) {
 			canvas.drawBitmap(mGameOver, 190, 400, null);
-			break;
-		case GM_PLAY:
-		{
+		} else if (tetris.isPlayState()) {
 			Tetrominos block = tetris.getCurrentBlock();
 			int [][]m_block = block.getBlock();
 
@@ -299,10 +278,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 							startY,
 							startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
 							startY + 200), null);
-		}	
-		   break;
-		case GM_PAUSE:
-		{
+		} else if (tetris.isPauseState()) {
 			canvas.drawBitmap(mGameStart, 190, 400, null);
 			canvas.drawBitmap(playBtn, null,
 					new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
@@ -312,10 +288,6 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 
 			mPaint.setTextSize(30);
 			canvas.drawText("[" + screenWidth + "x" + screenHeigth +"]", 800, 1700, mPaint);
-		}		
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -327,6 +299,52 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 
 		if (MotionEvent.ACTION_DOWN == event.getAction()) {
 
+			if (tetris == null) {
+				return true;
+			}
+
+			if (tetris.isGameOverState()) {
+				if ((event.getX() > 190) && (event.getY() > 400)
+						&& (event.getX() < 410) && (event.getY() < 500)) {
+					tetris.init();
+				}
+				return true;
+			}
+
+			else if (tetris.isIdleState()) {
+				if ((event.getX() > 190) && (event.getY() > 400)
+						&& (event.getX() < 410) && (event.getY() < 500)) {
+					tetris.play();
+					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+				} else if ((event.getX() > 700) && (event.getY() > 50)
+						&& (event.getY() < 250)) {
+					tetris.play();
+					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+					return true;
+				}
+				return true;
+			}
+
+			else if (tetris.isPauseState()) {
+				if ((event.getX() > 700) && (event.getY() > 50)
+						&& (event.getY() < 250)) {
+					tetris.resume();
+					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+				} else if ((event.getX() > 190) && (event.getY() > 400)
+						&& (event.getX() < 410) && (event.getY() < 500)) {
+					tetris.resume();
+					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+				}
+				return true;
+			}
+
+			else if (tetris.isPlayState()) {
+				if ((event.getX() > 700) && (event.getY() > 50)
+						&& (event.getY() < 250)) {
+					tetris.pause();
+					return true;
+				}
+			}
 
 			if (event.getX() > startX &&
 					event.getY() > startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 &&
@@ -378,59 +396,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 				return true;
 			}
 
-			if (GM_GAME_OVER == gameState) {
-				if ((event.getX() > 190) && (event.getY() > 400)
-						&& (event.getX() < 410) && (event.getY() < 500)) {
-					init();
-					tetris.init();
-				}
-			}
 
-			else if (GM_START == gameState) {
-				if ((event.getX() > 190) && (event.getY() > 400)
-						&& (event.getX() < 410) && (event.getY() < 500)) {
-					init();
-					tetris.play();
-					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
-				} else if (event.getX() > startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 &&
-						event.getY() > startY &&
-						event.getX() < startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200 &&
-						event.getY() < startY + 200) {
-					tetris.play();
-					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
-				}
-			}
-			
-			else if (GM_PAUSE == gameState) {
-				if ((event.getX() > 700) && (event.getY() > 50)
-						&& (event.getY() < 200)) {
-					tetris.resume();
-					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
-					Log.d("Pause", ">> X: " + event.getX() + " Y: " + event.getY());
-				} else if (event.getX() > startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 &&
-						   event.getY() > startY &&
-						   event.getX() < startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200 &&
-						   event.getY() < startY + 200) {
-					tetris.resume();
-					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
-				}
-			}
-
-			else if (GM_PLAY == gameState) {
-				if ((event.getX() > 700) && (event.getY() > 50)
-						&& (event.getY() < 200)) {
-					tetris.pause();
-					return true;
-				}
-
-				else if (event.getX() > startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 &&
-						event.getY() > startY &&
-						event.getX() < startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200 &&
-						event.getY() < startY + 200) {
-					tetris.pause();
-					return true;
-				}
-			}
 		}
 		return false;
 	}

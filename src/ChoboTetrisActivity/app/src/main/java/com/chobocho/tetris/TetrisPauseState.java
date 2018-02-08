@@ -13,9 +13,5 @@ public class TetrisPauseState extends TetrisGameState {
         this.tetris = tetris;
     }
 
-    public void update() {
-        TetrisLog.d("TetrisPauseState.update()");
-        tetris.getObserver().updatePause();
-    }
-
+    public boolean isPauseState() { return true; }
 }

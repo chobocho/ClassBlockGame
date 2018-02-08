@@ -59,6 +59,13 @@ public abstract class TetrisGameState {
 
     public void update() {
         TetrisLog.d("TetrisGameState.update()");
+        if (tetris != null) {
+            tetris.getObserver().update();
+        }
     }
 
+    public boolean isIdleState() { return false; }
+    public boolean isGameOverState() { return false; }
+    public boolean isPlayState() { return false; }
+    public boolean isPauseState() { return false; }
 }
