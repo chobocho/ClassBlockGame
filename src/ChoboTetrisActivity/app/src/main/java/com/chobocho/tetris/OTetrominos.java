@@ -19,7 +19,7 @@ public class OTetrominos extends Tetrominos {
         r = 0;
         w = 2;
         h = 2;
-        type = 2;
+        type = 1;
     }
 
     public void rotate() {

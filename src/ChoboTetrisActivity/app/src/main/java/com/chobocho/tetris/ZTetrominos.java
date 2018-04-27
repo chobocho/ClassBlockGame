@@ -25,7 +25,7 @@ public class ZTetrominos extends Tetrominos {
         r = 0;
         w = 3;
         h = 3;
-        type = 8;
+        type = 7;
     }
 
     public int[][] getBlock() {

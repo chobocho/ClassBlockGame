@@ -27,7 +27,7 @@ public class ITetrominos extends Tetrominos {
         r = 0;
         w = 4;
         h = 4;
-        type = 1;
+        type = 2;
     }
 
     public int[][] getBlock() {

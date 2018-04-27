@@ -25,7 +25,7 @@ public class STetrominos extends Tetrominos {
         r = 0;
         w = 3;
         h = 3;
-        type = 7;
+        type = 6;
     }
 
     public int[][] getBlock() {

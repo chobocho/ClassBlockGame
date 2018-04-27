@@ -362,6 +362,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 					event.getY() < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
 				if (tetris != null) {
 					tetris.moveBottom();
+					tetris.moveDown();
 				}
 				return true;
 			}
