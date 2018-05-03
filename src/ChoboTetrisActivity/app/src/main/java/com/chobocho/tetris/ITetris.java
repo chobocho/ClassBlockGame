@@ -35,8 +35,8 @@ public interface ITetris {
     public ITetrisObserver getObserver();
 
     public Tetrominos getCurrentBlock();
-
     public Tetrominos getNextBlock();
+    public Tetrominos getShadowBlock();
 
     public int addSore(int score);
 
@@ -45,4 +45,7 @@ public interface ITetris {
     public boolean isPlayState();
     public boolean isPauseState();
 
+    public boolean isEnableShadow();
+    public void enableShadow();
+    public void disableShadow();
 }

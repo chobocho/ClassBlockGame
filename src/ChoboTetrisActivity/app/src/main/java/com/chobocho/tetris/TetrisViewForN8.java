@@ -12,13 +12,16 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 public class TetrisViewForN8 extends View implements ITetrisObserver {
+	Context mContext;
 	ITetris tetris;
 	Bitmap mGameBack;
 	Bitmap mGameStart;
 	Bitmap mGameOver;
 	Bitmap mNumbers;
+	Bitmap shadowBlock;
 
 	Bitmap leftArrow;
 	Bitmap rightArrow;
@@ -65,6 +68,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		super(context);
 		gameState = GM_LOADING;
 
+		this.mContext = context;
 		loadImage(context);
 
 		mPaint = new Paint();
@@ -128,6 +132,8 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 				R.drawable.orange);
 		mTile[8] = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.cyan);
+		shadowBlock = BitmapFactory.decodeResource(context.getResources(),
+				R.drawable.shadow);
 
 		leftArrow = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.left);
@@ -143,6 +149,54 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 				R.drawable.pause);
 		bottomArrow =  BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.bottom);
+	}
+
+	public void onDrawBlock(Canvas canvas, Tetrominos block, int startX, int startY) {
+		int [][]m_block = block.getBlock();
+
+		int i = 0, j = 0;
+		int w = block.getWidth();
+		int h = block.getHeight();
+		int x = block.getX();
+		int y = block.getY();
+		int type = block.getType();
+
+		for (i = 0; i < w; i++) {
+			for (j = 0; j < h; j++) {
+				if (m_block[j][i] != Tetris.EMPTY) {
+					canvas.drawBitmap(mTile[type], null,
+							new Rect((x + i) * BLOCK_IMAGE_SIZE + startX,
+									(y + j) * BLOCK_IMAGE_SIZE + startY,
+									(x + i + 1) * BLOCK_IMAGE_SIZE + startX,
+									(y + j+ 1) * BLOCK_IMAGE_SIZE + startY),
+							null);
+				}
+			}
+		}
+	}
+
+	public void onDrawShadowBlock(Canvas canvas, Tetrominos block, int startX, int startY, Paint paint) {
+		int [][]m_block = block.getBlock();
+
+		int i = 0, j = 0;
+		int w = block.getWidth();
+		int h = block.getHeight();
+		int x = block.getX();
+		int y = block.getY();
+		int type = block.getType();
+
+		for (i = 0; i < w; i++) {
+			for (j = 0; j < h; j++) {
+				if (m_block[j][i] != Tetris.EMPTY) {
+					canvas.drawBitmap(shadowBlock, null,
+							new Rect((x + i) * BLOCK_IMAGE_SIZE + startX,
+									(y + j) * BLOCK_IMAGE_SIZE + startY,
+									(x + i + 1) * BLOCK_IMAGE_SIZE + startX,
+									(y + j+ 1) * BLOCK_IMAGE_SIZE + startY),
+							paint);
+				}
+			}
+		}
 	}
 
 	public void onDraw(Canvas canvas) {
@@ -226,52 +280,19 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		} else if (tetris.isGameOverState()) {
 			canvas.drawBitmap(mGameOver, 190, 400, null);
 		} else if (tetris.isPlayState()) {
-			Tetrominos block = tetris.getCurrentBlock();
-			int [][]m_block = block.getBlock();
 
-			int w = block.getWidth();
-			int h = block.getHeight();
-			int x = block.getX();
-			int y = block.getY();
-			int type = block.getType();
-
-			for (i = 0; i < w; i++) {
-				for (j = 0; j < h; j++) {
-					if (m_block[j][i] != Tetris.EMPTY) {
-						canvas.drawBitmap(mTile[type], null,
-								new Rect((x + i) * BLOCK_IMAGE_SIZE + startX,
-										(y + j) * BLOCK_IMAGE_SIZE + startY,
-										(x + i + 1) * BLOCK_IMAGE_SIZE + startX,
-										(y + j+ 1) * BLOCK_IMAGE_SIZE + startY),
-								null);
-					}
-				}
+			if (tetris.isEnableShadow()) {
+				Tetrominos sblock = tetris.getShadowBlock();
+				onDrawShadowBlock(canvas, sblock, startX, startY, paint);
 			}
+
+			Tetrominos block = tetris.getCurrentBlock();
+			onDrawBlock(canvas, block, startX, startY);
 
 			Tetrominos nextTetrominos = tetris.getNextBlock();
-			int [][]nextblock = nextTetrominos.getBlock();
-
-			w = nextTetrominos.getWidth();
-			h = nextTetrominos.getHeight();
-			x = nextTetrominos.getX();
-			y = nextTetrominos.getY();
-			type = nextTetrominos.getType();
-
 			int nStartX = 600;
 			int nStartY = startY + 5 * BLOCK_IMAGE_SIZE;
-
-			for (i = 0; i < w; i++) {
-				for (j = 0; j < h; j++) {
-					if (nextblock[j][i] != Tetris.EMPTY) {
-						canvas.drawBitmap(mTile[type], null,
-								new Rect((x + i) * BLOCK_IMAGE_SIZE + nStartX,
-										(y + j) * BLOCK_IMAGE_SIZE + nStartY,
-										(x + i + 1) * BLOCK_IMAGE_SIZE + nStartX,
-										(y + j+ 1) * BLOCK_IMAGE_SIZE + nStartY),
-								null);
-					}
-				}
-			}
+			onDrawBlock(canvas, nextTetrominos, nStartX, nStartY);
 
 			canvas.drawBitmap(pauseBtn, null,
 					new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
@@ -326,7 +347,21 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 			}
 
 			else if (tetris.isPauseState()) {
-				if ((event.getX() > 700) && (event.getY() > 50)
+				if (event.getX() > startX + 750&&
+						event.getY() > startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 &&
+						event.getX() < startX + 950 &&
+						event.getY() < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
+					if (tetris != null) {
+						if (tetris.isEnableShadow()) {
+							tetris.disableShadow();
+						} else {
+							Toast.makeText(mContext, "Enable shadow block!", Toast.LENGTH_SHORT).show();
+							tetris.enableShadow();
+						}
+					}
+					return true;
+				}
+				else if ((event.getX() > 700) && (event.getY() > 50)
 						&& (event.getY() < 250)) {
 					tetris.resume();
 					mHandler.sendEmptyMessageDelayed(0, gameSpeed);
