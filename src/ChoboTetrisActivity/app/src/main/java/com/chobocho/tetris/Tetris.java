@@ -5,6 +5,7 @@ public class Tetris implements ITetris {
     public static final int EMPTY = 0;
 
     private int score;
+    private int removedLineCount;
     private int level;
     private int speed;
     private boolean isEnableShadow = true;
@@ -33,6 +34,7 @@ public class Tetris implements ITetris {
     public void init() {
         TetrisLog.d("Tetris.Init()");
         score = 0;
+        removedLineCount = 0;
         level = 1;
         gameState = idleState;
         board.init();
@@ -105,6 +107,9 @@ public class Tetris implements ITetris {
     }
     public int getScore() { return this.score; }
     public int addSore(int score) { return this.score += score; }
+    public int getRemovedLineCount() { return this.removedLineCount; }
+    public void addRemoveLineCount(int line) { this.removedLineCount += line; }
+
     public int[][] getBoard() {
         return board.getBoard();
     }

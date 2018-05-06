@@ -100,6 +100,7 @@ public class TetrisPlayState extends TetrisGameState {
 
     public void updateBoard() {
         int removedLine = tetrisBoard.arrange();
+        tetris.addRemoveLineCount(removedLine);
         int point = calculatorScore(removedLine);
         tetris.addSore(point);
     }
@@ -110,19 +111,19 @@ public class TetrisPlayState extends TetrisGameState {
             return 0;
         }
 
-        int lineScore = 22;
-        if (removedLineCount >= 4) {
-            removedLineCount = 4;
-            lineScore = 888;
-        } else {
-            lineScore *= removedLineCount;
-        }
+        int lineScore[] = { 0, 88, 188, 288, 8888 };
+        int clearPoint = 0;
         if (additionalPoint > 10000) {
             additionalPoint = 10000;
         }
-        additionalPoint <<= removedLineCount;
+
+        if (removedLineCount > 0) {
+            additionalPoint *= 10;
+            clearPoint  = tetrisBoard.isClear() ? 10000 : 0;
+        }
+
         TetrisLog.d("calculatorScore : " + additionalPoint + " : " + removedLineCount);
-        return  (removedLineCount * 10 * additionalPoint + lineScore);
+        return  (removedLineCount * 10 * additionalPoint + lineScore[removedLineCount]);
     }
 
     public Tetrominos getCurrentTetrominos() {

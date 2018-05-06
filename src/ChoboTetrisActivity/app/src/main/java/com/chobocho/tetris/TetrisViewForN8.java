@@ -152,6 +152,10 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	}
 
 	public void onDrawBlock(Canvas canvas, Tetrominos block, int startX, int startY) {
+		onDrawBlock(canvas, block, startX, startY, null);
+	}
+
+	public void onDrawBlock(Canvas canvas, Tetrominos block, int startX, int startY, Paint paint) {
 		int [][]m_block = block.getBlock();
 
 		int i = 0, j = 0;
@@ -165,30 +169,6 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 			for (j = 0; j < h; j++) {
 				if (m_block[j][i] != Tetris.EMPTY) {
 					canvas.drawBitmap(mTile[type], null,
-							new Rect((x + i) * BLOCK_IMAGE_SIZE + startX,
-									(y + j) * BLOCK_IMAGE_SIZE + startY,
-									(x + i + 1) * BLOCK_IMAGE_SIZE + startX,
-									(y + j+ 1) * BLOCK_IMAGE_SIZE + startY),
-							null);
-				}
-			}
-		}
-	}
-
-	public void onDrawShadowBlock(Canvas canvas, Tetrominos block, int startX, int startY, Paint paint) {
-		int [][]m_block = block.getBlock();
-
-		int i = 0, j = 0;
-		int w = block.getWidth();
-		int h = block.getHeight();
-		int x = block.getX();
-		int y = block.getY();
-		int type = block.getType();
-
-		for (i = 0; i < w; i++) {
-			for (j = 0; j < h; j++) {
-				if (m_block[j][i] != Tetris.EMPTY) {
-					canvas.drawBitmap(shadowBlock, null,
 							new Rect((x + i) * BLOCK_IMAGE_SIZE + startX,
 									(y + j) * BLOCK_IMAGE_SIZE + startY,
 									(x + i + 1) * BLOCK_IMAGE_SIZE + startX,
@@ -236,7 +216,12 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 			}
 		}
 		mPaint.setTextSize(BLOCK_IMAGE_SIZE);
-		canvas.drawText(Integer.toString(tetris.getScore()), 800, 700, mPaint);
+
+		canvas.drawText("Score", 760, 640, mPaint);
+		canvas.drawText(Integer.toString(tetris.getScore()), 760, 700, mPaint);
+		canvas.drawText("Line", 760, 760, mPaint);
+		canvas.drawText(Integer.toString(tetris.getRemovedLineCount()), 760, 820, mPaint);
+
 		canvas.drawBitmap(leftArrow, null,
 				new Rect(startX,
 						startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
@@ -283,7 +268,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 
 			if (tetris.isEnableShadow()) {
 				Tetrominos sblock = tetris.getShadowBlock();
-				onDrawShadowBlock(canvas, sblock, startX, startY, paint);
+				onDrawBlock(canvas, sblock, startX, startY, paint);
 			}
 
 			Tetrominos block = tetris.getCurrentBlock();

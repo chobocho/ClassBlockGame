@@ -31,6 +31,10 @@ public interface ITetris {
     public int[][] getBoard();
 
     public int getScore();
+    public int addSore(int score);
+
+    public int getRemovedLineCount();
+    public void addRemoveLineCount(int line);
 
     public ITetrisObserver getObserver();
 
@@ -38,7 +42,6 @@ public interface ITetris {
     public Tetrominos getNextBlock();
     public Tetrominos getShadowBlock();
 
-    public int addSore(int score);
 
     public boolean isIdleState();
     public boolean isGameOverState();
