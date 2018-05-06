@@ -111,4 +111,18 @@ public class TetrisBoard {
         }
         return removedLIne;
     }
+
+    public boolean isClear() {
+        int i = 0, j = 0;
+
+        for (i = height-1; i >= 0; i--) {
+            for (j = 0; j < width; j++) {
+                if (board[i][j] != Tetris.EMPTY) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
