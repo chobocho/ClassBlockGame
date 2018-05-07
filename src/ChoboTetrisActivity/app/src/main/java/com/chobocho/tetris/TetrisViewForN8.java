@@ -1,6 +1,7 @@
 package com.chobocho.tetris;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class TetrisViewForN8 extends View implements ITetrisObserver {
 	Context mContext;
@@ -37,6 +40,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	Paint mPaint;
 
 	int   gameSpeed = 0;
+	int   highScore = 0;
 
 	final int N8_width = 1080;
 	final int N8_height = 1920;
@@ -58,7 +62,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 			Log.d("Tetris", "There is event");
 			if (tetris != null && tetris.isPlayState()) {
 				tetris.moveDown();
-				gameSpeed = 700 - (tetris.getScore() / 100000);
+				gameSpeed = 700 - (tetris.getScore() / 10000);
 				mHandler.sendEmptyMessageDelayed(0, gameSpeed);
 			}
 		}
@@ -66,9 +70,9 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	
 	public TetrisViewForN8(Context context) {
 		super(context);
-		gameState = GM_LOADING;
-
 		this.mContext = context;
+		load();
+		gameState = GM_LOADING;
 		loadImage(context);
 
 		mPaint = new Paint();
@@ -93,6 +97,9 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		if (mHandler.hasMessages(0)) {
 			mHandler.removeMessages(0);
 			Log.d("Tetris", "Removed event");
+		}
+		if (tetris != null) {
+			tetris.pause();
 		}
 	}
 
@@ -217,10 +224,12 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		}
 		mPaint.setTextSize(BLOCK_IMAGE_SIZE);
 
-		canvas.drawText("Score", 760, 640, mPaint);
-		canvas.drawText(Integer.toString(tetris.getScore()), 760, 700, mPaint);
-		canvas.drawText("Line", 760, 760, mPaint);
-		canvas.drawText(Integer.toString(tetris.getRemovedLineCount()), 760, 820, mPaint);
+		canvas.drawText("Score", 760, 700, mPaint);
+		canvas.drawText(Integer.toString(tetris.getScore()), 760, 760, mPaint);
+		canvas.drawText("Line", 760, 820, mPaint);
+		canvas.drawText(Integer.toString(tetris.getRemovedLineCount()), 760, 880, mPaint);
+		canvas.drawText("High Score : " + Integer.toString(highScore), startX, startY + 1620, mPaint);
+
 
 		canvas.drawBitmap(leftArrow, null,
 				new Rect(startX,
@@ -312,6 +321,10 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 			if (tetris.isGameOverState()) {
 				if ((event.getX() > 190) && (event.getY() > 400)
 						&& (event.getX() < 410) && (event.getY() < 500)) {
+					if (highScore < tetris.getScore()) {
+						highScore = tetris.getScore();
+						saveScore();
+					}
 					tetris.init();
 				}
 				return true;
@@ -421,4 +434,20 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		}
 		return false;
 	}
+
+	public void load() {
+		Log.d("Tetris", "load()");
+		SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
+		this.highScore = pref.getInt("highscore", 0);
+	}
+
+	public void saveScore() {
+		Log.d("Tetris", "saveScore()");
+		SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
+		SharedPreferences.Editor edit = pref.edit();
+
+		edit.putInt("highscore", this.highScore);
+		edit.commit();
+	}
+
 }

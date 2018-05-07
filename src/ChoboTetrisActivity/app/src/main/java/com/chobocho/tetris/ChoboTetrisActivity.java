@@ -38,7 +38,5 @@ public class ChoboTetrisActivity extends Activity {
 		if (twN8 != null) {
 			twN8.pauseGame();
 		}
-
 	}
-
 }
