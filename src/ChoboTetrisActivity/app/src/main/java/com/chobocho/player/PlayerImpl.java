@@ -1,6 +1,6 @@
 package com.chobocho.player;
 
-import com.chobocho.tetris.Tetris;
+import com.chobocho.tetris.*;
 
 public class PlayerImpl implements Player {
     Tetris tetris = null;
@@ -15,6 +15,11 @@ public class PlayerImpl implements Player {
 
     public boolean setInputDevice(PlayerInput pi) {
         pi.registerPlayer(this);
+        return true;
+    }
+
+    public boolean setView(PlayerUI pu) {
+        pu.registerPlayer(this);
         return true;
     }
 
