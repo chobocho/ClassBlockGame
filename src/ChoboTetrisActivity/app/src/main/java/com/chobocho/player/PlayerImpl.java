@@ -3,10 +3,11 @@ package com.chobocho.player;
 import com.chobocho.tetris.*;
 
 public class PlayerImpl implements Player {
-    Tetris tetris = null;
+    private Tetris tetris = null;
+    private PlayerInput playerInput = null;
 
-    public PlayerImpl() {
-
+    public PlayerImpl(int width, int height) {
+        tetris = new Tetris(width, height);
     }
 
     public boolean setView() {
@@ -14,12 +15,23 @@ public class PlayerImpl implements Player {
     }
 
     public boolean setInputDevice(PlayerInput pi) {
-        pi.registerPlayer(this);
+        playerInput =  pi;
+        playerInput.registerPlayer(this);
         return true;
     }
 
     public boolean setView(PlayerUI pu) {
         pu.registerPlayer(this);
+        return true;
+    }
+
+    public boolean touch (int x, int y) {
+        if (playerInput == null) {
+            return false;
+        }
+
+        playerInput.touch(x, y);
+
         return true;
     }
 
@@ -41,6 +53,19 @@ public class PlayerImpl implements Player {
     }
     public boolean bottom() {
         tetris.moveBottom();
+        return true;
+    }
+
+    public boolean play() {
+        tetris.play();
+        return true;
+    }
+    public boolean resume() {
+        tetris.resume();
+        return true;
+    }
+    public boolean pause() {
+        tetris.pause();
         return true;
     }
 }

@@ -8,4 +8,9 @@ public interface Player {
     public boolean down();
     public boolean rotate();
     public boolean bottom();
+    public boolean play();
+    public boolean resume();
+    public boolean pause();
+
+    public boolean touch (int x, int y);
 }

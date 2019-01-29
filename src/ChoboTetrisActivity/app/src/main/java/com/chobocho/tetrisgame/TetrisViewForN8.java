@@ -1,4 +1,4 @@
-package com.chobocho.tetris;
+package com.chobocho.tetrisgame;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,10 +15,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.chobocho.player.*;
+import com.chobocho.tetris.ITetris;
+import com.chobocho.tetris.ITetrisObserver;
+import com.chobocho.tetris.R;
+import com.chobocho.tetris.Tetris;
+import com.chobocho.tetris.Tetrominos;
+
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class TetrisViewForN8 extends View implements ITetrisObserver {
 	Context mContext;
+	Player player;
+	PlayerInput playerInput;
+	PlayerUI playerUI;
+
 	ITetris tetris;
 	Bitmap mGameBack;
 	Bitmap mGameStart;
@@ -68,7 +80,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		}
 	};
 	
-	public TetrisViewForN8(Context context) {
+	public TetrisViewForN8(Context context, Player player) {
 		super(context);
 		this.mContext = context;
 		load();
@@ -82,6 +94,13 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		mPaint.setTextSize(BLOCK_IMAGE_SIZE);
 
 		init();
+
+		this.player = player;
+		playerInput = new PlayerInputImplForN8();
+		playerUI = new PlayerUIForN8(mContext);
+
+		player.setInputDevice(playerInput);
+		player.setView(playerUI);
 	}
 
 	public void init() {
@@ -187,6 +206,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	}
 
 	public void onDraw(Canvas canvas) {
+		playerUI.onDraw(canvas);
 		int i = 0;
 		int j = 0;
         String str_gameState = "";

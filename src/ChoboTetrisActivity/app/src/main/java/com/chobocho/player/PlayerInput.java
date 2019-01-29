@@ -10,10 +10,14 @@ public abstract class PlayerInput {
     public static int START = 7;
     public static int RESUME = 8;
 
-    private Player player = null;
+    protected Player player = null;
 
     public abstract int pressKey(int key);
-    public abstract void registerPlayer(Player player);
+    public abstract int touch(int x, int y);
+
+    public  void registerPlayer(Player player) {
+        this.player = player;
+    }
 
     private void left() {
         player.left();
@@ -30,4 +34,12 @@ public abstract class PlayerInput {
     private void rotate() {
         player.rotate();
     }
+
+    private void bottom() { player.bottom();}
+
+    private void play() { player.play(); }
+
+    private void pause() { player.pause(); }
+
+    private void resume() { player.resume(); }
 }
