@@ -332,6 +332,12 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 		int startX = 80;
 		int startY = 80;
 
+		if (playerInput != null) {
+			int x = (int) event.getX();
+			int y = (int) event.getY();
+			playerInput.touch(x, y);
+		}
+
 		if (MotionEvent.ACTION_DOWN == event.getAction()) {
 
 			if (tetris == null) {

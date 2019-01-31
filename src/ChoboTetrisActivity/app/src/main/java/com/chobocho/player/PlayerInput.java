@@ -9,37 +9,43 @@ public abstract class PlayerInput {
     public static int ROTATE = 6;
     public static int START = 7;
     public static int RESUME = 8;
+    public static int NONE = -1;
 
     protected Player player = null;
 
+    protected int startX = 0;
+    protected int startY = 0;
+    protected int BLOCK_IMAGE_SIZE = 20;
+    protected int BOARD_HEIGHT = 20;
+
     public abstract int pressKey(int key);
-    public abstract int touch(int x, int y);
+    public abstract boolean touch(int x, int y);
 
     public  void registerPlayer(Player player) {
         this.player = player;
     }
 
-    private void left() {
+    protected void left() {
         player.left();
     }
 
-    private void right() {
+    protected void right() {
         player.right();
     }
 
-    private void down() {
+    protected void down() {
         player.down();
     }
-    
-    private void rotate() {
+
+    protected void rotate() {
         player.rotate();
     }
 
-    private void bottom() { player.bottom();}
+    protected void bottom() { player.bottom();}
 
-    private void play() { player.play(); }
+    protected void play() { player.play(); }
 
-    private void pause() { player.pause(); }
+    protected void pauseOrResume() { player.pauseOrResume(); }
 
-    private void resume() { player.resume(); }
+
 }
