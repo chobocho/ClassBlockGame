@@ -3,8 +3,6 @@ package com.chobocho.tetrisgame;
 import android.app.*;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.chobocho.player.Player;
 import com.chobocho.player.PlayerImpl;
@@ -23,7 +21,6 @@ public class ChoboTetrisActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
 		int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
 		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 		

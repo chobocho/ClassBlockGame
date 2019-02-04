@@ -8,6 +8,7 @@ public class PlayerImpl implements Player {
 
     public PlayerImpl(int width, int height) {
         tetris = new Tetris(width, height);
+        tetris.init();
     }
 
     public boolean setView() {
@@ -23,6 +24,10 @@ public class PlayerImpl implements Player {
     public boolean setView(PlayerUI pu) {
         pu.registerPlayer(this);
         return true;
+    }
+
+    public boolean setSCore(Score score) {
+        return tetris.setScore(score);
     }
 
     public boolean touch (int x, int y) {

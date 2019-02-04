@@ -110,6 +110,7 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 	public void setScreenSize(int w, int h) {
 		this.screenWidth = w;
 		this.screenHeigth = h;
+		playerUI.setScreenSize(w, h);
 	}
 
 	public void pauseGame() {
@@ -117,6 +118,10 @@ public class TetrisViewForN8 extends View implements ITetrisObserver {
 			mHandler.removeMessages(0);
 			Log.d("Tetris", "Removed event");
 		}
+		if (player != null) {
+			player.pause();
+		}
+
 		if (tetris != null) {
 			tetris.pause();
 		}

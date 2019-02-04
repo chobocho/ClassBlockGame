@@ -4,12 +4,14 @@ package com.chobocho.tetris;
 public class Tetris implements ITetris {
     public static final int EMPTY = 0;
 
+    private Score tetrisScore;
     private int score;
     private int removedLineCount;
     private int level;
     private int speed;
     private boolean isEnableShadow = true;
 
+    private TetrisInitState initState;
     private TetrisIdleState idleState;
     private TetrisPlayState playState;
     private TetrisPauseState pauseState;
@@ -25,10 +27,13 @@ public class Tetris implements ITetris {
 
         board = new TetrisBoard(width, height, this);
 
+        initState = new TetrisInitState(this);
         idleState = new TetrisIdleState(this);
         pauseState = new TetrisPauseState(this);
         playState = new TetrisPlayState(this, this.board);
         gameOverState = new TetrisGameOverState(this);
+
+        gameState = initState;
     }
 
     public void init() {
@@ -93,6 +98,11 @@ public class Tetris implements ITetris {
 
     public void setState(TetrisGameState state) {
         this.gameState = state;
+    }
+
+    public boolean setScore(Score score) {
+        this.tetrisScore = score;
+        return true;
     }
 
     public ITetrisObserver getObserver() {

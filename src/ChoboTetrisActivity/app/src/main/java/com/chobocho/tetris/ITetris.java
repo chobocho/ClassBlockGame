@@ -33,6 +33,8 @@ public interface ITetris {
     public int getScore();
     public int addSore(int score);
 
+    public boolean setScore(Score score);
+
     public int getRemovedLineCount();
     public void addRemoveLineCount(int line);
 
