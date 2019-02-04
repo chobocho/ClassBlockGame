@@ -22,5 +22,13 @@ public abstract class Score {
         this.score = score;
     }
 
-    public abstract void removeLIne(int line);
+    protected void addScore(int score) {
+        this.score += score;
+    }
+
+
+    public void removeLIne(int removedLineCount) {
+        calculatorScore(removedLineCount);
+    }
+    protected abstract void calculatorScore(int removedLineCount);
 }

@@ -4,8 +4,7 @@ package com.chobocho.tetris;
 public class Tetris implements ITetris {
     public static final int EMPTY = 0;
 
-    private Score tetrisScore;
-    private int score;
+    private Score score;
     private int removedLineCount;
     private int level;
     private int speed;
@@ -38,17 +37,22 @@ public class Tetris implements ITetris {
 
     public void init() {
         TetrisLog.d("Tetris.Init()");
-        score = 0;
+
         removedLineCount = 0;
         level = 1;
         gameState = idleState;
         board.init();
+        if (score != null) {
+            score.init();
+        }
         gameState.update();
     }
 
     public void play() {
         TetrisLog.d("Tetris.play()");
-        score = 0;
+        if (score != null) {
+            score.init();
+        }
         level = 1;
         setState(playState);
         gameState.init();
@@ -101,7 +105,7 @@ public class Tetris implements ITetris {
     }
 
     public boolean setScore(Score score) {
-        this.tetrisScore = score;
+        this.score = score;
         return true;
     }
 
@@ -115,10 +119,17 @@ public class Tetris implements ITetris {
     public int getHeight() {
         return board.getHeight();
     }
-    public int getScore() { return this.score; }
-    public int addSore(int score) { return this.score += score; }
+    public int getScore() {
+        if (score == null) {
+            return 0;
+        }
+        return this.score.getScore();
+    }
     public int getRemovedLineCount() { return this.removedLineCount; }
-    public void addRemoveLineCount(int line) { this.removedLineCount += line; }
+    public void addRemoveLineCount(int line) {
+        this.removedLineCount += line;
+        this.score.removeLIne(line);
+    }
 
     public int[][] getBoard() {
         return board.getBoard();

@@ -3,8 +3,8 @@ package com.chobocho.player;
 import android.graphics.Canvas;
 
 public abstract class PlayerUI {
-    private int width;
-    private int height;
+    protected int screenWidth;
+    protected int screenHeight;
     protected Player player;
 
     public  void registerPlayer(Player player) {
@@ -13,7 +13,7 @@ public abstract class PlayerUI {
     public abstract void onDraw(Canvas g);
 
     public void setScreenSize(int w, int h) {
-        width = w;
-        height = h;
+        this.screenWidth = w;
+        this.screenHeight = h;
     }
 }

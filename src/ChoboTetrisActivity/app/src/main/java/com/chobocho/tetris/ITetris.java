@@ -31,7 +31,6 @@ public interface ITetris {
     public int[][] getBoard();
 
     public int getScore();
-    public int addSore(int score);
 
     public boolean setScore(Score score);
 

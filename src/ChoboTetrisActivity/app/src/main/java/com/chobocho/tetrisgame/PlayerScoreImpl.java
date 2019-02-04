@@ -3,7 +3,23 @@ package com.chobocho.tetrisgame;
 import com.chobocho.tetris.Score;
 
 public class PlayerScoreImpl extends Score {
-    public void removeLIne(int line) {
+    protected int additionalScore;
 
+    protected void  calculatorScore(int removedLineCount) {
+        if (removedLineCount == 0) {
+            this.additionalScore = 1;
+        }
+
+        int lineScore[] = { 0, 88, 188, 288, 8888 };
+        int clearPoint = 0;
+        if (additionalScore > 10000) {
+            additionalScore = 10000;
+        }
+
+        if (removedLineCount > 0) {
+            additionalScore *= 10;
+        }
+
+        addScore(removedLineCount * 10 * additionalScore + lineScore[removedLineCount]);
     }
 }

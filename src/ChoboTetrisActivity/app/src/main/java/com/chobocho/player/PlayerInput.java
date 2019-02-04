@@ -15,8 +15,7 @@ public abstract class PlayerInput {
 
     protected int startX = 0;
     protected int startY = 0;
-    protected int BLOCK_IMAGE_SIZE = 20;
-    protected int BOARD_HEIGHT = 20;
+    protected int BLOCK_IMAGE_SIZE = 60;
 
     public abstract int pressKey(int key);
     public abstract boolean touch(int x, int y);
@@ -26,22 +25,22 @@ public abstract class PlayerInput {
     }
 
     protected void left() {
-        player.left();
+        player.MoveLeft();
     }
 
     protected void right() {
-        player.right();
+        player.MoveRight();
     }
 
     protected void down() {
-        player.down();
+        player.MoveDown();
     }
 
     protected void rotate() {
         player.rotate();
     }
 
-    protected void bottom() { player.bottom();}
+    protected void bottom() { player.MoveBottom();}
 
     protected void play() { player.play(); }
 
