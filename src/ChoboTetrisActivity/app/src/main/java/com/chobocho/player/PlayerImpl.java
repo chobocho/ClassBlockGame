@@ -111,10 +111,11 @@ public class PlayerImpl implements Player, ITetrisObserver {
         }
 
         if (tetris.isIdleState()) {
+            gameViewObserver.startGame();
             tetris.play();
             return true;
         }
-        
+
         if (tetris.isGameOverState()) {
             tetris.init();
             return true;
@@ -134,6 +135,7 @@ public class PlayerImpl implements Player, ITetrisObserver {
             return false;
         }
 
+        gameViewObserver.startGame();
         tetris.resume();
         return true;
     }

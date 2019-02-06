@@ -69,6 +69,11 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 		playerUI.setScreenSize(w, h);
 	}
 
+	public void startGame() {
+		Message message = new Message();
+		mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+	}
+
 	public void pauseGame() {
 		if (mHandler.hasMessages(0)) {
 			mHandler.removeMessages(0);
