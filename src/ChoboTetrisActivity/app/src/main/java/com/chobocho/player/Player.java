@@ -15,10 +15,10 @@ public interface Player {
     public boolean MoveDown();
     public boolean rotate();
     public boolean MoveBottom();
+    public boolean clickStartButton();
     public boolean play();
     public boolean pauseOrResume();
     public boolean pause();
-    public boolean resume();
     public int getWidth();
     public int getHeight();
     public int[][] getBoard();

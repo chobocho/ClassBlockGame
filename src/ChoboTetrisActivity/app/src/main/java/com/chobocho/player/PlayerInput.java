@@ -44,6 +44,6 @@ public abstract class PlayerInput {
 
     protected void play() { player.play(); }
 
-    protected void pauseOrResume() { player.pauseOrResume(); }
+    protected void clickStartButton() { player.clickStartButton(); }
 
 }

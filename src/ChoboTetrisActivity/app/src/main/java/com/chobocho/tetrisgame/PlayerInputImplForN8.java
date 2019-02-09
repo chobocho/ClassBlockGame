@@ -27,7 +27,7 @@ public class PlayerInputImplForN8 extends PlayerInput {
         if ((touchX > 190) && (touchY > 400)
                 && (touchX < 500) && (touchY < 500)) {
             Log.d(TAG, "touch: ");
-            play();
+            clickStartButton();
             return true;
         }
 

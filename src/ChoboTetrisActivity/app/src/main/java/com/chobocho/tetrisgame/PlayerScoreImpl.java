@@ -12,14 +12,12 @@ public class PlayerScoreImpl extends Score {
 
         int lineScore[] = { 0, 88, 188, 288, 8888 };
 
+        additionalScore *= 10;
+
         if (additionalScore > 10000) {
             additionalScore = 10000;
         }
-
-        if (removedLineCount > 0) {
-            additionalScore *= 10;
-        }
-
+        
         addScore(removedLineCount * 10 * additionalScore + lineScore[removedLineCount]);
     }
     protected void ClearBoard() {

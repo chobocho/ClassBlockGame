@@ -24,7 +24,6 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 	int   gameSpeed = 0;
 	int   highScore = 0;
 
-	public static final int DELAY = 500;
 	public static final int EMPTY_MESSAGE = 0;
 
 
@@ -34,6 +33,9 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 			if (player != null && player.isPlayState()) {
                 player.MoveDown();
 				gameSpeed = 700 - (player.getScore() / 10000);
+                if (mHandler.hasMessages(EMPTY_MESSAGE)) {
+                    mHandler.removeMessages(EMPTY_MESSAGE);
+                }
 				mHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
 			}
 		}
@@ -62,7 +64,6 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 	}
 
 	public void startGame() {
-		Message message = new Message();
 		mHandler.sendEmptyMessage(EMPTY_MESSAGE);
 	}
 

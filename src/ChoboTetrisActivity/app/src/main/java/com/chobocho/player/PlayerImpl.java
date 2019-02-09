@@ -110,6 +110,31 @@ public class PlayerImpl implements Player, ITetrisObserver {
         return true;
     }
 
+    public boolean clickStartButton() {
+        if (tetris == null) {
+            return false;
+        }
+
+        if (tetris.isIdleState()) {
+            tetris.play();
+            gameViewObserver.startGame();
+            return true;
+        }
+
+        if (tetris.isGameOverState()) {
+            tetris.init();
+            return true;
+        }
+
+        if (tetris.isPauseState()) {
+            tetris.resume();
+            gameViewObserver.startGame();
+            return true;
+        }
+
+        return false;
+    }
+
     public boolean play() {
         if (tetris == null) {
             return false;
@@ -134,22 +159,12 @@ public class PlayerImpl implements Player, ITetrisObserver {
 
         if (tetris.isPlayState()) {
             tetris.pause();
-            return false;
+            return true;
         }
 
         return false;
     }
-    public boolean resume() {
-        boolean isPauseState = (tetris != null  &&  tetris.isPauseState());
 
-        if (!isPauseState) {
-            return false;
-        }
-
-        gameViewObserver.startGame();
-        tetris.resume();
-        return true;
-    }
     public boolean pause() {
         boolean isPlayState = (tetris != null  &&  tetris.isPlayState());
 
