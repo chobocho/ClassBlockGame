@@ -46,5 +46,4 @@ public abstract class PlayerInput {
 
     protected void pauseOrResume() { player.pauseOrResume(); }
 
-
 }

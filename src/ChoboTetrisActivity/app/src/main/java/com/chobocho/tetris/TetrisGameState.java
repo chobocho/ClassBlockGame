@@ -1,11 +1,10 @@
 package com.chobocho.tetris;
-import java.util.*;
 
 /**
  * 
  */
 public abstract class TetrisGameState {
-    protected ITetris tetris;
+    protected ITetrisGameState tetris;
 
     public TetrisGameState() {
     }
@@ -63,12 +62,12 @@ public abstract class TetrisGameState {
 
     public void update() {
         TetrisLog.d("TetrisGameState.update()");
-        boolean isUpdatable = ((tetris != null) && (tetris.getObserver() != null));
 
-        if (!isUpdatable) {
+        if (tetris == null) {
             return;
         }
-        tetris.getObserver().update();
+
+        tetris.update();
     }
 
     public boolean isInitState() { return false; }

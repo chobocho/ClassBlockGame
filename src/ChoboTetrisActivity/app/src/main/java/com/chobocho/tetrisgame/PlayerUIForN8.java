@@ -140,6 +140,12 @@ public class PlayerUIForN8 extends PlayerUI {
                             startY + 200), null);
         } else if (player.isGameOverState()) {
             canvas.drawBitmap(mGameOver, 190, 400, null);
+
+            canvas.drawBitmap(playBtn, null,
+                    new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
+                            startY,
+                            startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
+                            startY + 200), null);
         } else if (player.isPlayState()) {
 
             if (player.isEnableShadow()) {

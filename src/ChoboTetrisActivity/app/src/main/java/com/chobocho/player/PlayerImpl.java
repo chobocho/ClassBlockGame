@@ -84,6 +84,16 @@ public class PlayerImpl implements Player, ITetrisObserver {
         if (tetris == null) {
             return false;
         }
+
+        if (tetris.isPauseState()) {
+            if (tetris.isEnableShadow()) {
+                tetris.disableShadow();
+            } else {
+                tetris.enableShadow();
+            }
+            return true;
+        }
+
         tetris.rotate();
         return true;
     }

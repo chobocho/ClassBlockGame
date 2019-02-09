@@ -25,22 +25,15 @@ public class PlayerInputImplForN8 extends PlayerInput {
         }
 
         if ((touchX > 190) && (touchY > 400)
-                && (touchX < 410) && (touchY < 500)) {
+                && (touchX < 500) && (touchY < 500)) {
             Log.d(TAG, "touch: ");
             play();
             return true;
         }
 
-
-        if ((touchX > 190) && (touchY > 400)
-                && (touchX < 410) && (touchY < 500)) {
-            Log.d(TAG, "play1()");
-            play();
-            return true;
-        }
         if ((touchX > 700) && (touchY > 50)
                 && (touchY < 250)) {
-            Log.d(TAG, "play2()");
+            Log.d(TAG, "Round button: play()");
             play();
             return true;
         }
@@ -54,19 +47,6 @@ public class PlayerInputImplForN8 extends PlayerInput {
             return true;
         }
 
-        if ((touchX > 700) && (touchY > 50)
-                && (touchY < 250)) {
-            Log.d(TAG, "pauseOrResume():1");
-            pauseOrResume();
-            return true;
-        }
-        if ((touchX > 190) && (touchY > 400)
-                && (touchX < 410) && (touchY < 500)) {
-            Log.d(TAG, "pauseOrResume():2");
-            pauseOrResume();
-            return true;
-        }
-
         if (touchX > startX &&
                 touchY > startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 &&
                 touchX < startX + 200 &&
@@ -74,7 +54,9 @@ public class PlayerInputImplForN8 extends PlayerInput {
             Log.d(TAG, "left()");
             left();
             return true;
-        } else if (touchX > startX + 250 &&
+        }
+
+        if (touchX > startX + 250 &&
                 touchY > startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 &&
                 touchX < startX + 450 &&
                 touchY < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
@@ -82,7 +64,9 @@ public class PlayerInputImplForN8 extends PlayerInput {
             bottom();
             down();
             return true;
-        } else if (touchX > startX + 500 &&
+        }
+
+        if (touchX > startX + 500 &&
                 touchY > startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 &&
                 touchX < startX + 700 &&
                 touchY < startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200) {
@@ -99,6 +83,7 @@ public class PlayerInputImplForN8 extends PlayerInput {
             down();
             return true;
         }
+
         return false;
     }
 }

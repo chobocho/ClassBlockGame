@@ -1,7 +1,7 @@
 package com.chobocho.tetris;
 
 
-public class Tetris implements ITetris {
+public class Tetris implements ITetris, ITetrisGameState {
     public static final int EMPTY = 0;
 
     private Score score;
@@ -109,10 +109,6 @@ public class Tetris implements ITetris {
         return true;
     }
 
-    public ITetrisObserver getObserver() {
-        return this.observer;
-    }
-
     public int getWidth() {
         return board.getWidth();
     }
@@ -161,4 +157,11 @@ public class Tetris implements ITetris {
     public boolean isGameOverState() { return gameState.isGameOverState(); }
     public boolean isPlayState() { return gameState.isPlayState(); }
     public boolean isPauseState() { return gameState.isPauseState(); }
+
+    public void update() {
+        if (this.observer == null) {
+            return;
+        }
+        this.observer.update();
+    }
 }
