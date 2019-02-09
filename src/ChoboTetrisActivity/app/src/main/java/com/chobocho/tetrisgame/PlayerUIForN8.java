@@ -50,7 +50,7 @@ public class PlayerUIForN8 extends PlayerUI {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (isLoadedImage == false) {
+        if (!isLoadedImage) {
             return;
         }
 
