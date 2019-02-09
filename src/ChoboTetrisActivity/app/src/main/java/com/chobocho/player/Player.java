@@ -23,6 +23,7 @@ public interface Player {
     public int getHeight();
     public int[][] getBoard();
     public int getScore();
+    public int getHighScore();
     public int getRemovedLineCount();
 
     public boolean isIdleState();

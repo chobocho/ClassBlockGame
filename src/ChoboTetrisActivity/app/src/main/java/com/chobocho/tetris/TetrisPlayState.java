@@ -100,12 +100,17 @@ public class TetrisPlayState extends TetrisGameState {
         return (tetrisBoard.isAcceptable(currentTetrominos) == false);
     }
 
-    public void updateBoard() {
-        int removedLine = tetrisBoard.arrange();
-        tetris.addRemoveLineCount(removedLine);
+    private void updateScore(int removedLines) {
+        tetris.addRemoveLineCount(removedLines);
         if (tetrisBoard.isClear()) {
             tetris.ClearBoard();
         }
+        tetris.updateHighScore();
+    }
+
+    public void updateBoard() {
+        int removedLine = tetrisBoard.arrange();
+        updateScore(removedLine);
     }
 
     public Tetrominos getCurrentTetrominos() {

@@ -36,6 +36,10 @@ public class PlayerImpl implements Player, ITetrisObserver {
         return tetris.getScore();
     }
 
+    public int getHighScore() {
+        return tetris.getHighScore();
+    }
+
     public int getRemovedLineCount() {
         return tetris.getRemovedLineCount();
     }

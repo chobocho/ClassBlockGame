@@ -121,6 +121,18 @@ public class Tetris implements ITetris, ITetrisGameState {
         }
         return this.score.getScore();
     }
+
+    public int getHighScore() {
+        if (score == null) {
+            return 0;
+        }
+        return this.score.getHighScore();
+    }
+
+    public void updateHighScore() {
+        score.updateHighScore();
+    }
+
     public int getRemovedLineCount() { return this.removedLineCount; }
     public void addRemoveLineCount(int line) {
         this.removedLineCount += line;

@@ -24,6 +24,7 @@ public interface ITetris {
     public int[][] getBoard();
 
     public int getScore();
+    public int getHighScore();
 
     public boolean setScore(Score score);
 

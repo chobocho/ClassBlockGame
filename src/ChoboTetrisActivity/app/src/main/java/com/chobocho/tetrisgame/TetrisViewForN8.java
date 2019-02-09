@@ -24,12 +24,9 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 	int   gameSpeed = 0;
 	int   highScore = 0;
 
-	public static final int GM_LOADING = 0;
-	public static final int GM_IDLE = 1;
 	public static final int DELAY = 500;
 	public static final int EMPTY_MESSAGE = 0;
 
-	int     gameState = GM_LOADING; 
 
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -45,26 +42,20 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 	public TetrisViewForN8(Context context, Player player) {
 		super(context);
 		this.mContext = context;
-		load();
+		loadHIghScore();
 
-		gameState = GM_LOADING;
 		this.player = player;
 		playerInput = new PlayerInputImplForN8();
 		playerUI = new PlayerUIForN8(mContext);
 		playerScore = new PlayerScoreImpl();
+		playerScore.setHighScore(this.highScore);
 
 		player.setInputDevice(playerInput);
 		player.setView(playerUI);
 		player.setSCore(playerScore);
 		player.register(this);
 		player.init();
-
-        init();
     }
-
-	public void init() {
-		gameState = GM_IDLE;
-	}
 
 	public void setScreenSize(int w, int h) {
 		playerUI.setScreenSize(w, h);
@@ -83,6 +74,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 		if (player != null) {
 			player.pause();
 		}
+		saveScore();
 	}
 
 	public void update() {
@@ -111,7 +103,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         return playerInput.touch(x, y);
 	}
 
-	public void load() {
+	public void loadHIghScore() {
 		Log.d("Tetris", "load()");
 		SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
 		this.highScore = pref.getInt("highscore", 0);
@@ -119,10 +111,13 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 
 	public void saveScore() {
 		Log.d("Tetris", "saveScore()");
+		if (this.highScore > player.getHighScore()) {
+		    return;
+        }
 		SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
 		SharedPreferences.Editor edit = pref.edit();
 
-		edit.putInt("highscore", this.highScore);
+		edit.putInt("highscore", player.getHighScore());
 		edit.commit();
 	}
 
