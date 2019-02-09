@@ -55,52 +55,43 @@ public class PlayerImpl implements Player, ITetrisObserver {
         return tetris.setScore(score);
     }
 
-    public boolean MoveLeft() {
-        boolean isPlayState = (tetris != null  &&  tetris.isPlayState());
 
-        if (!isPlayState) {
+    public boolean MoveLeft() {
+        if (tetris == null) {
             return false;
         }
         tetris.moveLeft();
         return true;
     }
+
     public boolean MoveRight() {
-        boolean isPlayState = (tetris != null  &&  tetris.isPlayState());
-        if (!isPlayState) {
+        if (tetris == null) {
             return false;
         }
-
         tetris.moveRight();
         return true;
     }
-    public boolean MoveDown() {
-        boolean isPlayState = (tetris != null  &&  tetris.isPlayState());
 
-        if (!isPlayState) {
+    public boolean MoveDown() {
+        if (tetris == null) {
             return false;
         }
-
         tetris.moveDown();
         return true;
     }
-    public boolean rotate() {
-        boolean isPlayState = (tetris != null  &&  tetris.isPlayState());
 
-        if (!isPlayState) {
+    public boolean rotate() {
+        if (tetris == null) {
             return false;
         }
-
         tetris.rotate();
         return true;
     }
 
     public boolean MoveBottom() {
-        boolean isPlayState = (tetris != null  &&  tetris.isPlayState());
-
-        if (!isPlayState) {
+        if (tetris == null) {
             return false;
         }
-
         tetris.moveBottom();
         return true;
     }
@@ -111,8 +102,8 @@ public class PlayerImpl implements Player, ITetrisObserver {
         }
 
         if (tetris.isIdleState()) {
-            gameViewObserver.startGame();
             tetris.play();
+            gameViewObserver.startGame();
             return true;
         }
 
@@ -122,11 +113,17 @@ public class PlayerImpl implements Player, ITetrisObserver {
         }
 
         if (tetris.isPauseState()) {
+            tetris.resume();
+            gameViewObserver.startGame();
+            return true;
+        }
+
+        if (tetris.isPlayState()) {
+            tetris.pause();
             return false;
         }
 
-        tetris.play();
-        return true;
+        return false;
     }
     public boolean resume() {
         boolean isPauseState = (tetris != null  &&  tetris.isPauseState());

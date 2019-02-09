@@ -27,6 +27,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 	public static final int GM_LOADING = 0;
 	public static final int GM_IDLE = 1;
 	public static final int DELAY = 500;
+	public static final int EMPTY_MESSAGE = 0;
 
 	int     gameState = GM_LOADING; 
 
@@ -36,7 +37,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 			if (player != null && player.isPlayState()) {
                 player.MoveDown();
 				gameSpeed = 700 - (player.getScore() / 10000);
-				mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+				mHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
 			}
 		}
 	};
@@ -71,12 +72,12 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
 
 	public void startGame() {
 		Message message = new Message();
-		mHandler.sendEmptyMessageDelayed(0, gameSpeed);
+		mHandler.sendEmptyMessage(EMPTY_MESSAGE);
 	}
 
 	public void pauseGame() {
-		if (mHandler.hasMessages(0)) {
-			mHandler.removeMessages(0);
+		if (mHandler.hasMessages(EMPTY_MESSAGE)) {
+			mHandler.removeMessages(EMPTY_MESSAGE);
 			Log.d("Tetris", "Removed event");
 		}
 		if (player != null) {

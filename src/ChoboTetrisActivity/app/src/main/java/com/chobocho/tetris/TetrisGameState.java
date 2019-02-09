@@ -63,7 +63,7 @@ public abstract class TetrisGameState {
 
     public void update() {
         TetrisLog.d("TetrisGameState.update()");
-        boolean isUpdatable = tetris != null && tetris.getObserver() != null;
+        boolean isUpdatable = ((tetris != null) && (tetris.getObserver() != null));
 
         if (!isUpdatable) {
             return;
