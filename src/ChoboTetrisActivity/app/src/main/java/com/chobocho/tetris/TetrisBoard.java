@@ -1,5 +1,5 @@
 package com.chobocho.tetris;
-import java.util.*;
+
 
 /**
  * 
@@ -7,16 +7,14 @@ import java.util.*;
 public class TetrisBoard {
     private int width;
     private int height;
-    private ITetris tetris;
     private int[][] board;
 
     /**
      * Default constructor
      */
-    public TetrisBoard(int width, int height, Tetris tetris) {
+    public TetrisBoard(int width, int height) {
         this.width = width;
         this.height = height;
-        this.tetris = tetris;
 
         board = new int[this.height][this.width];
         init();

@@ -26,9 +26,9 @@ public abstract class Score {
         this.score += score;
     }
 
-
     public void removeLIne(int removedLineCount) {
         calculatorScore(removedLineCount);
     }
     protected abstract void calculatorScore(int removedLineCount);
+    protected abstract void ClearBoard();
 }

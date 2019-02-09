@@ -8,7 +8,7 @@ public class Tetris implements ITetris {
     private int removedLineCount;
     private int level;
     private int speed;
-    private boolean isEnableShadow = true;
+    private boolean isEnableShadow = false;
 
     private TetrisInitState initState;
     private TetrisIdleState idleState;
@@ -24,7 +24,7 @@ public class Tetris implements ITetris {
     public Tetris(int width, int height) {
         TetrisLog.d("Create new Tetris : " + width + " x " + height);
 
-        board = new TetrisBoard(width, height, this);
+        board = new TetrisBoard(width, height);
 
         initState = new TetrisInitState(this);
         idleState = new TetrisIdleState(this);
@@ -129,6 +129,10 @@ public class Tetris implements ITetris {
     public void addRemoveLineCount(int line) {
         this.removedLineCount += line;
         this.score.removeLIne(line);
+    }
+
+    public void ClearBoard() {
+        this.score.ClearBoard();
     }
 
     public int[][] getBoard() {

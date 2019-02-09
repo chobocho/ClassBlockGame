@@ -10,17 +10,19 @@ public class TetrisPlayState extends TetrisGameState {
     public TetrisPlayState(Tetris tetris, TetrisBoard board) {
         this.tetris = tetris;
         this.tetrisBoard = board;
-        currentTetrominos = TetrominosFactory.create();
-        nextTetrominos = TetrominosFactory.create();
-        shadowTetrominos = TetrominosFactory.clone(currentTetrominos);
+        initTetrominos();
     }
 
     public void init() {
         this.tetrisBoard.init();
-        currentTetrominos = TetrominosFactory.create();
-        shadowTetrominos = TetrominosFactory.clone(currentTetrominos);
-        nextTetrominos = TetrominosFactory.create();
+        initTetrominos();
         additionalPoint = 1;
+    }
+
+    private void initTetrominos() {
+        currentTetrominos = TetrominosFactory.create();
+        nextTetrominos = TetrominosFactory.create();
+        shadowTetrominos = TetrominosFactory.clone(currentTetrominos);
     }
 
     public void moveLeft() {
@@ -101,6 +103,9 @@ public class TetrisPlayState extends TetrisGameState {
     public void updateBoard() {
         int removedLine = tetrisBoard.arrange();
         tetris.addRemoveLineCount(removedLine);
+        if (tetrisBoard.isClear()) {
+            tetris.ClearBoard();
+        }
     }
 
     public Tetrominos getCurrentTetrominos() {

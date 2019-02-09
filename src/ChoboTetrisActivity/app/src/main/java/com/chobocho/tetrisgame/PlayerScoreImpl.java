@@ -11,7 +11,7 @@ public class PlayerScoreImpl extends Score {
         }
 
         int lineScore[] = { 0, 88, 188, 288, 8888 };
-        int clearPoint = 0;
+
         if (additionalScore > 10000) {
             additionalScore = 10000;
         }
@@ -21,5 +21,8 @@ public class PlayerScoreImpl extends Score {
         }
 
         addScore(removedLineCount * 10 * additionalScore + lineScore[removedLineCount]);
+    }
+    protected void ClearBoard() {
+        addScore(100000);
     }
 }

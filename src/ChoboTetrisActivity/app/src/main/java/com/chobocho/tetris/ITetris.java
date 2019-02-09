@@ -36,6 +36,7 @@ public interface ITetris {
 
     public int getRemovedLineCount();
     public void addRemoveLineCount(int line);
+    public void ClearBoard();
 
     public ITetrisObserver getObserver();
 
