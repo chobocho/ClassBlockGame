@@ -12,89 +12,103 @@ import android.view.View;
 import com.chobocho.player.*;
 import com.chobocho.tetris.Score;
 
+import java.lang.ref.WeakReference;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class TetrisViewForN8 extends View implements PlayerObserver {
-	Context mContext;
-	Player player;
-	PlayerInput playerInput;
-	PlayerUI playerUI;
-	Score playerScore;
+    Context mContext;
+    Player player;
+    PlayerInput playerInput;
+    PlayerUI playerUI;
+    Score playerScore;
 
-	int   gameSpeed = 0;
-	int   highScore = 0;
+    int gameSpeed = 0;
+    int highScore = 0;
 
-	public static final int EMPTY_MESSAGE = 0;
+    public static final int EMPTY_MESSAGE = 0;
 
 
-	Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			Log.d("Tetris", "There is event");
-			if (player != null && player.isPlayState()) {
-                player.MoveDown();
-				gameSpeed = 700 - (player.getScore() / 10000);
-                if (mHandler.hasMessages(EMPTY_MESSAGE)) {
-                    mHandler.removeMessages(EMPTY_MESSAGE);
+    private NonLeakHandler mHandler = new NonLeakHandler(this);
+
+    private final class NonLeakHandler extends Handler {
+        private final WeakReference<TetrisViewForN8> ref;
+
+        public NonLeakHandler(TetrisViewForN8 act) {
+            ref = new WeakReference<>(act);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            TetrisViewForN8 act = ref.get();
+            if (act != null) {
+                Log.d("Tetris", "There is event");
+                if (player != null && player.isPlayState()) {
+                    player.MoveDown();
+                    gameSpeed = 700 - (player.getScore() / 10000);
+                    if (mHandler.hasMessages(EMPTY_MESSAGE)) {
+                        mHandler.removeMessages(EMPTY_MESSAGE);
+                    }
+                    mHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
                 }
-				mHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
-			}
-		}
-	};
-	
-	public TetrisViewForN8(Context context, Player player) {
-		super(context);
-		this.mContext = context;
-		loadHIghScore();
-
-		this.player = player;
-		playerInput = new PlayerInputImplForN8();
-		playerUI = new PlayerUIForN8(mContext);
-		playerScore = new PlayerScoreImpl();
-		playerScore.setHighScore(this.highScore);
-
-		player.setInputDevice(playerInput);
-		player.setView(playerUI);
-		player.setSCore(playerScore);
-		player.register(this);
-		player.init();
+            }
+        }
     }
 
-	public void setScreenSize(int w, int h) {
-		playerUI.setScreenSize(w, h);
-	}
+    public TetrisViewForN8(Context context, Player player) {
+        super(context);
+        this.mContext = context;
+        loadHIghScore();
 
-	public void startGame() {
-		mHandler.sendEmptyMessage(EMPTY_MESSAGE);
-	}
+        this.player = player;
+        playerInput = new PlayerInputImplForN8();
+        playerUI = new PlayerUIForN8(mContext);
+        playerScore = new PlayerScoreImpl();
+        playerScore.setHighScore(this.highScore);
 
-	public void pauseGame() {
-		if (mHandler.hasMessages(EMPTY_MESSAGE)) {
-			mHandler.removeMessages(EMPTY_MESSAGE);
-			Log.d("Tetris", "Removed event");
-		}
-		if (player != null) {
-			player.pause();
-		}
-		saveScore();
-	}
+        player.setInputDevice(playerInput);
+        player.setView(playerUI);
+        player.setSCore(playerScore);
+        player.register(this);
+        player.init();
+    }
 
-	public void update() {
-		Log.d("Tetris", "View.update()");
-		invalidate();
-	}
+    public void setScreenSize(int w, int h) {
+        playerUI.setScreenSize(w, h);
+    }
 
-	public void onDraw(Canvas canvas) {
-	    if (playerUI == null) {
-	        return;
+    public void startGame() {
+        mHandler.sendEmptyMessage(EMPTY_MESSAGE);
+    }
+
+    public void pauseGame() {
+        if (mHandler.hasMessages(EMPTY_MESSAGE)) {
+            mHandler.removeMessages(EMPTY_MESSAGE);
+            Log.d("Tetris", "Removed event");
         }
-		playerUI.onDraw(canvas);
-	}
+        if (player != null) {
+            player.pause();
+        }
+        saveScore();
+    }
 
-	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("Tetris", ">> X: " + event.getX() + " Y: " + event.getY());
+    public void update() {
+        Log.d("Tetris", "View.update()");
+        invalidate();
+    }
 
-		if (playerInput == null) {
-		    return false;
+    public void onDraw(Canvas canvas) {
+        if (playerUI == null) {
+            return;
+        }
+        playerUI.onDraw(canvas);
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d("Tetris", ">> X: " + event.getX() + " Y: " + event.getY());
+
+        if (playerInput == null) {
+            return false;
         }
         if (MotionEvent.ACTION_DOWN != event.getAction()) {
             return false;
@@ -102,24 +116,24 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         int x = (int) event.getX();
         int y = (int) event.getY();
         return playerInput.touch(x, y);
-	}
+    }
 
-	public void loadHIghScore() {
-		Log.d("Tetris", "load()");
-		SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
-		this.highScore = pref.getInt("highscore", 0);
-	}
+    public void loadHIghScore() {
+        Log.d("Tetris", "load()");
+        SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
+        this.highScore = pref.getInt("highscore", 0);
+    }
 
-	public void saveScore() {
-		Log.d("Tetris", "saveScore()");
-		if (this.highScore > player.getHighScore()) {
-		    return;
+    public void saveScore() {
+        Log.d("Tetris", "saveScore()");
+        if (this.highScore > player.getHighScore()) {
+            return;
         }
-		SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
-		SharedPreferences.Editor edit = pref.edit();
+        SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
 
-		edit.putInt("highscore", player.getHighScore());
-		edit.commit();
-	}
+        edit.putInt("highscore", player.getHighScore());
+        edit.commit();
+    }
 
 }
