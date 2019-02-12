@@ -4,7 +4,7 @@ public abstract class Score {
     private int score;
     private int highScore;
 
-    public Score() {
+    protected Score() {
         this.score = 0;
         this.highScore = 0;
     }

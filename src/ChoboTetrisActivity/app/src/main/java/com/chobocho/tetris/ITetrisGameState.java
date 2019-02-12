@@ -1,8 +1,8 @@
 package com.chobocho.tetris;
 
 public interface ITetrisGameState {
-    public void addRemoveLineCount(int line);
-    public void ClearBoard();
-    public void update();
-    public void updateHighScore();
+    void addRemoveLineCount(int line);
+    void ClearBoard();
+    void update();
+    void updateHighScore();
 }

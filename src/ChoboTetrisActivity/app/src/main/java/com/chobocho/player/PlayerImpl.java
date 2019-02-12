@@ -4,7 +4,6 @@ import com.chobocho.tetris.*;
 
 public class PlayerImpl implements Player, ITetrisObserver {
     private Tetris tetris = null;
-    private PlayerInput playerInput = null;
     private PlayerObserver gameViewObserver = null;
 
     public PlayerImpl(int width, int height) {
@@ -44,8 +43,7 @@ public class PlayerImpl implements Player, ITetrisObserver {
         return tetris.getRemovedLineCount();
     }
 
-    public boolean setInputDevice(PlayerInput pi) {
-        playerInput =  pi;
+    public boolean setInputDevice(PlayerInput playerInput) {
         playerInput.registerPlayer(this);
         return true;
     }

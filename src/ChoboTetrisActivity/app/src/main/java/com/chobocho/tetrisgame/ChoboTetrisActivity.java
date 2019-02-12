@@ -8,11 +8,11 @@ import com.chobocho.player.Player;
 import com.chobocho.player.PlayerImpl;
 
 public class ChoboTetrisActivity extends Activity {
-	public final int BOARD_WIDTH = 10;
-	public final int BOARD_HEIGHT = 20;
+	private final int BOARD_WIDTH = 10;
+	private final int BOARD_HEIGHT = 20;
 
-	TetrisViewForN8 twN8;
-	Player player;
+	private TetrisViewForN8 twN8;
+	private Player player;
 
 	/** Called when the activity is first created. */
 	@Override

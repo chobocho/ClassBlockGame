@@ -12,7 +12,7 @@ public class TetrisBoard {
     /**
      * Default constructor
      */
-    public TetrisBoard(int width, int height) {
+    TetrisBoard(int width, int height) {
         this.width = width;
         this.height = height;
 

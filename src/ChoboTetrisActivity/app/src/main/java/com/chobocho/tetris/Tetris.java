@@ -10,7 +10,6 @@ public class Tetris implements ITetris, ITetrisGameState {
     private int speed;
     private boolean isEnableShadow = false;
 
-    private TetrisInitState initState;
     private TetrisIdleState idleState;
     private TetrisPlayState playState;
     private TetrisPauseState pauseState;
@@ -26,7 +25,8 @@ public class Tetris implements ITetris, ITetrisGameState {
 
         board = new TetrisBoard(width, height);
 
-        initState = new TetrisInitState(this);
+        TetrisInitState initState = new TetrisInitState(this);
+
         idleState = new TetrisIdleState(this);
         pauseState = new TetrisPauseState(this);
         playState = new TetrisPlayState(this, this.board);
@@ -100,7 +100,7 @@ public class Tetris implements ITetris, ITetrisGameState {
         gameState.update();
     }
 
-    public void setState(TetrisGameState state) {
+    private void setState(TetrisGameState state) {
         this.gameState = state;
     }
 

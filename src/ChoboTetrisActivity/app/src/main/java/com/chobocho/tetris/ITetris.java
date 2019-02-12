@@ -4,43 +4,43 @@ package com.chobocho.tetris;
  * 
  */
 public interface ITetris {
-    public void init();
+    void init();
 
-    public void moveLeft();
-    public void moveRight();
-    public void moveDown();
-    public void rotate();
-    public void moveBottom();
+    void moveLeft();
+    void moveRight();
+    void moveDown();
+    void rotate();
+    void moveBottom();
 
-    public void play();
-    public void pause();
-    public void resume();
+    void play();
+    void pause();
+    void resume();
 
-    public int getWidth();
-    public int getHeight();
+    int getWidth();
+    int getHeight();
 
-    public void register(ITetrisObserver observer);
+    void register(ITetrisObserver observer);
 
-    public int[][] getBoard();
+    int[][] getBoard();
 
-    public int getScore();
-    public int getHighScore();
+    int getScore();
+    int getHighScore();
 
-    public boolean setScore(Score score);
+    boolean setScore(Score score);
 
-    public int getRemovedLineCount();
+    int getRemovedLineCount();
 
-    public Tetrominos getCurrentBlock();
-    public Tetrominos getNextBlock();
-    public Tetrominos getShadowBlock();
+    Tetrominos getCurrentBlock();
+    Tetrominos getNextBlock();
+    Tetrominos getShadowBlock();
 
-    public boolean isIdleState();
-    public boolean isGameOverState();
-    public boolean isPlayState();
-    public boolean isPauseState();
+    boolean isIdleState();
+    boolean isGameOverState();
+    boolean isPlayState();
+    boolean isPauseState();
 
-    public void enableShadow();
-    public void disableShadow();
-    public boolean isEnableShadow();
+    void enableShadow();
+    void disableShadow();
+    boolean isEnableShadow();
 
 }
