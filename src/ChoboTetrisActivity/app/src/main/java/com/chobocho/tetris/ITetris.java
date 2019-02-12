@@ -1,7 +1,7 @@
 package com.chobocho.tetris;
 
 /**
- * 
+ *
  */
 public interface ITetris {
     void init();
@@ -39,8 +39,7 @@ public interface ITetris {
     boolean isPlayState();
     boolean isPauseState();
 
+    boolean isEnableShadow();
     void enableShadow();
     void disableShadow();
-    boolean isEnableShadow();
-
 }

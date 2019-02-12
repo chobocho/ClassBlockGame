@@ -16,7 +16,7 @@ public interface Player {
     boolean MoveBottom();
     boolean clickStartButton();
     boolean play();
-    boolean pauseOrResume();
+
     boolean pause();
     int getWidth();
     int getHeight();

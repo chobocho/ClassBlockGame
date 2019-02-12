@@ -84,11 +84,11 @@ public class TetrisPlayState extends TetrisGameState {
     }
 
 
-    public void fixCurrentBlock() {
+    private void fixCurrentBlock() {
         tetrisBoard.addTetrominos(currentTetrominos);
     }
 
-    public void updateBlock() {
+    private void updateBlock() {
         currentTetrominos = nextTetrominos;
         shadowTetrominos = TetrominosFactory.clone(currentTetrominos);
         nextTetrominos = TetrominosFactory.create();
@@ -107,7 +107,7 @@ public class TetrisPlayState extends TetrisGameState {
         tetris.updateHighScore();
     }
 
-    public void updateBoard() {
+    private void updateBoard() {
         int removedLine = tetrisBoard.arrange();
         updateScore(removedLine);
     }

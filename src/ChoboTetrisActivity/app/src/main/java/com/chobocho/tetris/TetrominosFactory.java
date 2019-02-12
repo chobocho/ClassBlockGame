@@ -6,7 +6,7 @@ public class TetrominosFactory {
        return create ((int) (Math.random() * 7)+1);
     }
 
-    public static Tetrominos create(int type) {
+    private static Tetrominos create(int type) {
         switch(type) {
                 case 1:
                     return new OTetrominos();

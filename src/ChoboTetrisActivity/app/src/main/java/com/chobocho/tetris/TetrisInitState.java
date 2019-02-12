@@ -9,5 +9,4 @@ public class TetrisInitState extends TetrisGameState {
         this.tetris = tetris;
     }
 
-    public boolean isInitState() { return true; }
 }

@@ -9,10 +9,6 @@ public abstract class Score {
         this.highScore = 0;
     }
 
-    public Score (int score) {
-        this.score = score;
-    }
-
     public void init() {
         score = 0;
     }
@@ -21,10 +17,6 @@ public abstract class Score {
         return score;
     }
     public int getHighScore() { return highScore; }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public void setHighScore(int score) {
         this.highScore = score;

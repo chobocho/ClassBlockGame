@@ -29,23 +29,12 @@ public abstract class TetrisGameState {
         // TODO implement here
     }
 
-    public void fixCurrentBlock() {
-
-    }
-
     public void moveBottom() {
         // TODO implement here
     }
 
-    public void updateBlock() {
-    }
-
     public boolean gameOver() {
         return false;
-    }
-
-    public void updateBoard() {
-
     }
 
     public Tetrominos getCurrentTetrominos() {
@@ -70,7 +59,6 @@ public abstract class TetrisGameState {
         tetris.update();
     }
 
-    public boolean isInitState() { return false; }
     public boolean isIdleState() { return false; }
     public boolean isGameOverState() { return false; }
     public boolean isPlayState() { return false; }

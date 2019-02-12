@@ -6,8 +6,6 @@ public class Tetris implements ITetris, ITetrisGameState {
 
     private Score score;
     private int removedLineCount;
-    private int level;
-    private int speed;
     private boolean isEnableShadow = false;
 
     private TetrisIdleState idleState;
@@ -39,7 +37,6 @@ public class Tetris implements ITetris, ITetrisGameState {
         TetrisLog.d("Tetris.Init()");
 
         removedLineCount = 0;
-        level = 1;
         gameState = idleState;
         board.init();
         if (score != null) {
@@ -53,7 +50,7 @@ public class Tetris implements ITetris, ITetrisGameState {
         if (score != null) {
             score.init();
         }
-        level = 1;
+
         setState(playState);
         gameState.init();
         gameState.update();
@@ -151,12 +148,12 @@ public class Tetris implements ITetris, ITetrisGameState {
     public Tetrominos getShadowBlock() { return gameState.getShodowTetrominos(); }
 
     public boolean isEnableShadow(){ return this.isEnableShadow; }
-    @Override
+
     public void enableShadow() {
         this.isEnableShadow = true;
         gameState.update();
     }
-    @Override
+
     public void disableShadow() {
         this.isEnableShadow = false;
         gameState.update();

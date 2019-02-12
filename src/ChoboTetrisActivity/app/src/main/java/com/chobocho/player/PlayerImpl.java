@@ -3,7 +3,7 @@ package com.chobocho.player;
 import com.chobocho.tetris.*;
 
 public class PlayerImpl implements Player, ITetrisObserver {
-    private Tetris tetris;
+    private ITetris tetris;
     private PlayerObserver gameViewObserver = null;
 
     public PlayerImpl(int width, int height) {
@@ -13,10 +13,6 @@ public class PlayerImpl implements Player, ITetrisObserver {
 
     public void init() {
         tetris.init();
-    }
-
-    public boolean setView() {
-        return true;
     }
 
     public int getWidth() {
@@ -171,10 +167,6 @@ public class PlayerImpl implements Player, ITetrisObserver {
         }
 
         tetris.pause();
-        return true;
-    }
-
-    public boolean pauseOrResume() {
         return true;
     }
 

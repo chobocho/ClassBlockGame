@@ -5,15 +5,11 @@ import android.util.Log;
 import com.chobocho.player.PlayerInput;
 
 public class PlayerInputImplForN8 extends PlayerInput {
-    private String TAG = this.getClass().getName();
+    private final String TAG = this.getClass().getName();
 
     public PlayerInputImplForN8() {
         startX = 80;
         startY = 80;
-    }
-
-    public int pressKey(int key) {
-        return 0;
     }
 
     public boolean touch(int touchX, int touchY) {

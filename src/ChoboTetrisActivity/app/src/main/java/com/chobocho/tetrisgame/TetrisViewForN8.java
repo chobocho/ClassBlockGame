@@ -1,10 +1,10 @@
 package com.chobocho.tetrisgame;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,11 +13,10 @@ import android.view.View;
 import com.chobocho.player.*;
 import com.chobocho.tetris.Score;
 
-import java.lang.ref.WeakReference;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class TetrisViewForN8 extends View implements PlayerObserver {
+    private String LOG_TAG = this.getClass().getName();
     private Context mContext;
     private Player player;
     private PlayerInput playerInput;
@@ -27,39 +26,15 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
     private int highScore = 0;
 
     private static final int EMPTY_MESSAGE = 0;
-
-
-    private NonLeakHandler mHandler = new NonLeakHandler(this);
-
-    @SuppressLint("HandlerLeak")
-    private final class NonLeakHandler extends Handler {
-        private final WeakReference<TetrisViewForN8> ref;
-        private int gameSpeed = 0;
-
-        public NonLeakHandler(TetrisViewForN8 act) {
-            ref = new WeakReference<>(act);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            TetrisViewForN8 act = ref.get();
-            if (act != null) {
-                Log.d("Tetris", "There is event");
-                if (player != null && player.isPlayState()) {
-                    player.MoveDown();
-                    gameSpeed = 700 - (player.getScore() / 10000);
-                    if (mHandler.hasMessages(EMPTY_MESSAGE)) {
-                        mHandler.removeMessages(EMPTY_MESSAGE);
-                    }
-                    mHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
-                }
-            }
-        }
-    }
+    private HandlerThread playerHandlerThread;
+    private Handler playerHandler;
 
     public TetrisViewForN8(Context context, Player player) {
         super(context);
         this.mContext = context;
+
+        createPlayerThread();
+
         loadHIghScore();
 
         this.player = player;
@@ -75,27 +50,57 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         player.init();
     }
 
+    private void createPlayerThread() {
+        Log.d(LOG_TAG,"createPlayerThread");
+        playerHandlerThread = new HandlerThread("Player Processing Thread");
+        playerHandlerThread.start();
+        playerHandler = new Handler(playerHandlerThread.getLooper()){
+            @Override
+            public void handleMessage(Message msg){
+                if (player != null && player.isPlayState()) {
+                    player.MoveDown();
+                    int gameSpeed = 700 - (player.getScore() / 10000);
+                    if (playerHandler.hasMessages(EMPTY_MESSAGE)) {
+                        playerHandler.removeMessages(EMPTY_MESSAGE);
+                    }
+                    playerHandler.sendEmptyMessageDelayed(EMPTY_MESSAGE, gameSpeed);
+                }
+            }
+        };
+    }
+
+
     public void setScreenSize(int w, int h) {
         playerUI.setScreenSize(w, h);
     }
 
     public void startGame() {
-        mHandler.sendEmptyMessage(EMPTY_MESSAGE);
+        playerHandler.sendEmptyMessage(EMPTY_MESSAGE);
     }
 
     public void pauseGame() {
-        if (mHandler.hasMessages(EMPTY_MESSAGE)) {
-            mHandler.removeMessages(EMPTY_MESSAGE);
-            Log.d("Tetris", "Removed event");
+        Log.d(LOG_TAG, "pauseGame");
+        if (playerHandler.hasMessages(EMPTY_MESSAGE)) {
+            playerHandler.removeMessages(EMPTY_MESSAGE);
+            Log.d(LOG_TAG, "Removed event");
         }
         if (player != null) {
             player.pause();
         }
+
+        if (playerHandlerThread != null) {
+            playerHandlerThread.quit();
+        }
         saveScore();
     }
 
+    public void resumeGame() {
+        Log.d(LOG_TAG, "resumeGame");
+        createPlayerThread();
+    }
+
     public void update() {
-        Log.d("Tetris", "View.update()");
+        Log.d(LOG_TAG, "View.update()");
         invalidate();
     }
 
@@ -107,7 +112,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("Tetris", ">> X: " + event.getX() + " Y: " + event.getY());
+        Log.d(LOG_TAG, ">> X: " + event.getX() + " Y: " + event.getY());
 
         if (playerInput == null) {
             return false;
@@ -120,14 +125,14 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         return playerInput.touch(x, y);
     }
 
-    public void loadHIghScore() {
-        Log.d("Tetris", "load()");
+    private void loadHIghScore() {
+        Log.d(LOG_TAG, "load()");
         SharedPreferences pref = mContext.getSharedPreferences("choboTetris", MODE_PRIVATE);
         this.highScore = pref.getInt("highscore", 0);
     }
 
-    public void saveScore() {
-        Log.d("Tetris", "saveScore()");
+    private void saveScore() {
+        Log.d(LOG_TAG, "saveScore()");
         if (this.highScore > player.getHighScore()) {
             return;
         }

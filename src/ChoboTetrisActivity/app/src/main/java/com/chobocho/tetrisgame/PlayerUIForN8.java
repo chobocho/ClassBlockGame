@@ -17,8 +17,8 @@ import com.chobocho.tetris.Tetrominos;
 public class PlayerUIForN8 extends PlayerUI {
     private Context mConext;
     private final int BLOCK_IMAGE_SIZE = 60;
-    final int N8_width = 1080;
-    final int N8_height = 1920;
+    private final int N8_width = 1080;
+    private final int N8_height = 1920;
     public static final int BOARD_WIDTH = 10;
     public static final int BOARD_HEIGHT = 20;
 
@@ -27,8 +27,6 @@ public class PlayerUIForN8 extends PlayerUI {
     Bitmap mGameBack;
     Bitmap mGameStart;
     Bitmap mGameOver;
-    Bitmap mNumbers;
-    Bitmap shadowBlock;
 
     Bitmap leftArrow;
     Bitmap rightArrow;
@@ -39,7 +37,6 @@ public class PlayerUIForN8 extends PlayerUI {
     Bitmap pauseBtn;
 
     Bitmap[] mTile   = new Bitmap[10];
-    Bitmap[] mNumber = new Bitmap[10];
 
     boolean isLoadedImage = false;
 
@@ -56,7 +53,6 @@ public class PlayerUIForN8 extends PlayerUI {
 
         int i = 0;
         int j = 0;
-        String str_gameState = "";
         int startX = 80;
         int startY = 80;
 
@@ -216,8 +212,6 @@ public class PlayerUIForN8 extends PlayerUI {
                 R.drawable.orange);
         mTile[8] = BitmapFactory.decodeResource(mConext.getResources(),
                 R.drawable.cyan);
-        shadowBlock = BitmapFactory.decodeResource(mConext.getResources(),
-                R.drawable.shadow);
 
         leftArrow = BitmapFactory.decodeResource(mConext.getResources(),
                 R.drawable.left);

@@ -37,4 +37,12 @@ public class ChoboTetrisActivity extends Activity {
 			twN8.pauseGame();
 		}
 	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (twN8 != null) {
+			twN8.resumeGame();
+		}
+	}
 }

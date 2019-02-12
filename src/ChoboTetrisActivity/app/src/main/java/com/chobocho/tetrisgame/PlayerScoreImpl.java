@@ -3,7 +3,7 @@ package com.chobocho.tetrisgame;
 import com.chobocho.tetris.Score;
 
 public class PlayerScoreImpl extends Score {
-    protected int additionalScore;
+    private int additionalScore;
 
     protected void  calculatorScore(int removedLineCount) {
         if (removedLineCount == 0) {
