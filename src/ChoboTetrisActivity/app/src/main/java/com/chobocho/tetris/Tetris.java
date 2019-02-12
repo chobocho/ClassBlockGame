@@ -151,10 +151,12 @@ public class Tetris implements ITetris, ITetrisGameState {
     public Tetrominos getShadowBlock() { return gameState.getShodowTetrominos(); }
 
     public boolean isEnableShadow(){ return this.isEnableShadow; }
+    @Override
     public void enableShadow() {
         this.isEnableShadow = true;
         gameState.update();
     }
+    @Override
     public void disableShadow() {
         this.isEnableShadow = false;
         gameState.update();

@@ -3,7 +3,7 @@ package com.chobocho.player;
 import com.chobocho.tetris.*;
 
 public class PlayerImpl implements Player, ITetrisObserver {
-    private Tetris tetris = null;
+    private Tetris tetris;
     private PlayerObserver gameViewObserver = null;
 
     public PlayerImpl(int width, int height) {

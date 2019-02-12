@@ -1,6 +1,5 @@
 package com.chobocho.player;
 
-import com.chobocho.tetris.ITetrisObserver;
 import com.chobocho.tetris.Score;
 import com.chobocho.tetris.Tetrominos;
 

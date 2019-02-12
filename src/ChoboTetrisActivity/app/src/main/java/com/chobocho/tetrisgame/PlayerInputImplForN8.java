@@ -1,9 +1,7 @@
 package com.chobocho.tetrisgame;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import com.chobocho.player.Player;
 import com.chobocho.player.PlayerInput;
 
 public class PlayerInputImplForN8 extends PlayerInput {
