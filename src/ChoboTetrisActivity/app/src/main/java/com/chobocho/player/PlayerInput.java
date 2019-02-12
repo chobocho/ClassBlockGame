@@ -15,7 +15,7 @@ public abstract class PlayerInput {
 
     protected int startX = 0;
     protected int startY = 0;
-    protected int BLOCK_IMAGE_SIZE = 60;
+    protected final int BLOCK_IMAGE_SIZE = 60;
 
     public abstract int pressKey(int key);
     public abstract boolean touch(int x, int y);

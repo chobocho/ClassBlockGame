@@ -8,7 +8,6 @@ import com.chobocho.player.PlayerInput;
 
 public class PlayerInputImplForN8 extends PlayerInput {
     private String TAG = this.getClass().getName();
-    public static final int BOARD_HEIGHT = 20;
 
     public PlayerInputImplForN8() {
         startX = 80;
@@ -37,6 +36,8 @@ public class PlayerInputImplForN8 extends PlayerInput {
             play();
             return true;
         }
+
+        final int BOARD_HEIGHT = 20;
 
         if (touchX > startX + 750 &&
                 touchY > startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 &&

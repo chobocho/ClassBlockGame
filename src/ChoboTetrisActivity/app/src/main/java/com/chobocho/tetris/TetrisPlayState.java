@@ -125,7 +125,7 @@ public class TetrisPlayState extends TetrisGameState {
         return shadowTetrominos;
     }
 
-    public void moveShadowBottom() {
+    private void moveShadowBottom() {
         TetrisLog.d("TetrisPlayState.moveShadowBottom()");
 
         shadowTetrominos.clone(currentTetrominos);

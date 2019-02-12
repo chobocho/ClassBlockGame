@@ -8,11 +8,7 @@ import com.chobocho.player.Player;
 import com.chobocho.player.PlayerImpl;
 
 public class ChoboTetrisActivity extends Activity {
-	private final int BOARD_WIDTH = 10;
-	private final int BOARD_HEIGHT = 20;
-
 	private TetrisViewForN8 twN8;
-	private Player player;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -24,7 +20,10 @@ public class ChoboTetrisActivity extends Activity {
 		
 	    Log.e("Test", "W" + screenWidth + " H" + screenHeight);
 
-		player = new PlayerImpl(BOARD_WIDTH, BOARD_HEIGHT);
+		int BOARD_WIDTH = 10;
+		int BOARD_HEIGHT = 20;
+
+		Player player = new PlayerImpl(BOARD_WIDTH, BOARD_HEIGHT);
 
 		twN8 = new TetrisViewForN8(this, player);
 		twN8.setScreenSize(screenWidth,screenHeight);

@@ -1,5 +1,6 @@
 package com.chobocho.tetrisgame;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -17,22 +18,23 @@ import java.lang.ref.WeakReference;
 import static android.content.Context.MODE_PRIVATE;
 
 public class TetrisViewForN8 extends View implements PlayerObserver {
-    Context mContext;
-    Player player;
-    PlayerInput playerInput;
-    PlayerUI playerUI;
-    Score playerScore;
+    private Context mContext;
+    private Player player;
+    private PlayerInput playerInput;
+    private PlayerUI playerUI;
+    private Score playerScore;
 
-    int gameSpeed = 0;
-    int highScore = 0;
+    private int highScore = 0;
 
-    public static final int EMPTY_MESSAGE = 0;
+    private static final int EMPTY_MESSAGE = 0;
 
 
     private NonLeakHandler mHandler = new NonLeakHandler(this);
 
+    @SuppressLint("HandlerLeak")
     private final class NonLeakHandler extends Handler {
         private final WeakReference<TetrisViewForN8> ref;
+        private int gameSpeed = 0;
 
         public NonLeakHandler(TetrisViewForN8 act) {
             ref = new WeakReference<>(act);
