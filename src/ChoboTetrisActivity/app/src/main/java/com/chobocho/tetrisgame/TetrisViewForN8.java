@@ -24,6 +24,9 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
     private Score playerScore;
 
     private int highScore = 0;
+    private float scaleX = 1.0f;
+    private float scaleY = 1.0f;
+    private boolean isSetScale = false;
 
     private static final int EMPTY_MESSAGE = 0;
     private HandlerThread playerHandlerThread;
@@ -32,6 +35,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
     public TetrisViewForN8(Context context, Player player) {
         super(context);
         this.mContext = context;
+        isSetScale = false;
 
         createPlayerThread();
 
@@ -108,6 +112,14 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         if (playerUI == null) {
             return;
         }
+
+        if (!isSetScale) {
+            scaleX = canvas.getWidth() / 1080f;
+            scaleY = canvas.getHeight() / 1920f;
+            isSetScale = true;
+        }
+        canvas.scale(scaleX, scaleY);
+
         playerUI.onDraw(canvas);
     }
 
@@ -120,8 +132,13 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         if (MotionEvent.ACTION_DOWN != event.getAction()) {
             return false;
         }
-        int x = (int) event.getX();
-        int y = (int) event.getY();
+
+        Log.d(LOG_TAG, ">> scaleX: " + scaleX + " scaleY: " + scaleY);
+
+        int x = (int) (event.getX()/scaleX);
+        int y = (int) (event.getY()/scaleY);
+
+        Log.d(LOG_TAG, ">> X: " + x + " Y: " + y);
         return playerInput.touch(x, y);
     }
 
