@@ -7,7 +7,7 @@ package com.chobocho.tetris;
 public class TetrisBoard {
     private int width;
     private int height;
-    private int[][] board;
+    protected int[][] board;
 
     /**
      * Default constructor
