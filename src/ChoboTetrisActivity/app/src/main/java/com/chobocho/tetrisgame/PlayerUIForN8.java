@@ -15,7 +15,7 @@ import com.chobocho.tetris.Tetris;
 import com.chobocho.tetris.Tetrominos;
 
 public class PlayerUIForN8 extends PlayerUI {
-    private Context mConext;
+    private Context mContext;
     private final int BLOCK_IMAGE_SIZE = 60;
     private final int N8_width = 1080;
     private final int N8_height = 1920;
@@ -41,7 +41,7 @@ public class PlayerUIForN8 extends PlayerUI {
     boolean isLoadedImage = false;
 
     public PlayerUIForN8(Context context) {
-        mConext = context;
+        mContext = context;
         init();
     }
 
@@ -187,45 +187,45 @@ public class PlayerUIForN8 extends PlayerUI {
     }
 
     private void loadImage() {
-        mGameBack = BitmapFactory.decodeResource(mConext.getResources(),
+        mGameBack = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.backimage);
-        mGameStart = BitmapFactory.decodeResource(mConext.getResources(),
+        mGameStart = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.start);
-        mGameOver = BitmapFactory.decodeResource(mConext.getResources(),
+        mGameOver = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.gameover);
 
-        mTile[0] =  BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[0] =  BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.black);
-        mTile[1] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[1] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.yellow);
-        mTile[2] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[2] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.blue);
-        mTile[3] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[3] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.red);
-        mTile[4] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[4] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.gray);
-        mTile[5] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[5] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.green);
-        mTile[6] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[6] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.magenta);
-        mTile[7] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[7] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.orange);
-        mTile[8] = BitmapFactory.decodeResource(mConext.getResources(),
+        mTile[8] = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.cyan);
 
-        leftArrow = BitmapFactory.decodeResource(mConext.getResources(),
+        leftArrow = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.left);
-        rightArrow = BitmapFactory.decodeResource(mConext.getResources(),
+        rightArrow = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.right);
-        downArrow  = BitmapFactory.decodeResource(mConext.getResources(),
+        downArrow  = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.down);
-        rotateArrow = BitmapFactory.decodeResource(mConext.getResources(),
+        rotateArrow = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.rotate);
-        playBtn = BitmapFactory.decodeResource(mConext.getResources(),
+        playBtn = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.play);
-        pauseBtn = BitmapFactory.decodeResource(mConext.getResources(),
+        pauseBtn = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.pause);
-        bottomArrow =  BitmapFactory.decodeResource(mConext.getResources(),
+        bottomArrow =  BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.bottom);
     }
 
