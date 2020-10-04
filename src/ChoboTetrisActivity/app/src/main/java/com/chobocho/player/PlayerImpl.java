@@ -1,13 +1,16 @@
 package com.chobocho.player;
 
 import com.chobocho.tetris.*;
+import com.chobocho.tetrisgame.BoardProfile;
 
 public class PlayerImpl implements Player, ITetrisObserver {
     private ITetris tetris;
     private PlayerObserver gameViewObserver = null;
+    private BoardProfile profile;
 
-    public PlayerImpl(int width, int height) {
-        tetris = new Tetris(width, height);
+    public PlayerImpl(BoardProfile profile) {
+        this.profile = profile;
+        tetris = new Tetris(BoardProfile.boardWidth, BoardProfile.boardHeight);
         tetris.register(this);
     }
 

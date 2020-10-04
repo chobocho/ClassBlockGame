@@ -8,7 +8,8 @@ import com.chobocho.player.Player;
 import com.chobocho.player.PlayerImpl;
 
 public class ChoboTetrisActivity extends Activity {
-	private TetrisViewForN8 twN8;
+	TetrisViewForN8 twN8;
+	BoardProfile profile;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -17,16 +18,12 @@ public class ChoboTetrisActivity extends Activity {
 
 		int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
 		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-	    Log.e("Test", "W" + screenWidth + " H" + screenHeight);
+		profile = new BoardProfile(screenWidth, screenHeight);
 
-		int BOARD_WIDTH = 10;
-		int BOARD_HEIGHT = 20;
+	    Log.e("ChoboTetris", "W" + screenWidth + " H" + screenHeight + " B" + profile.blockSize());
 
-		Player player = new PlayerImpl(BOARD_WIDTH, BOARD_HEIGHT);
-
-		twN8 = new TetrisViewForN8(this, player);
-		twN8.setScreenSize(screenWidth,screenHeight);
+		Player player = new PlayerImpl(profile);
+		twN8 = new TetrisViewForN8(this, player, profile);
 		setContentView(twN8);
 	}
 

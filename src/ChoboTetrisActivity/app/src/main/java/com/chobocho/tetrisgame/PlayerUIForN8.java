@@ -10,17 +10,16 @@ import android.graphics.Rect;
 import android.util.Log;
 
 import com.chobocho.player.PlayerUI;
+import com.chobocho.player.TetrisButton;
 import com.chobocho.tetris.R;
 import com.chobocho.tetris.Tetris;
 import com.chobocho.tetris.Tetrominos;
 
 public class PlayerUIForN8 extends PlayerUI {
     private Context mContext;
-    private final int BLOCK_IMAGE_SIZE = 60;
-    private final int N8_width = 1080;
-    private final int N8_height = 1920;
-    public static final int BOARD_WIDTH = 10;
-    public static final int BOARD_HEIGHT = 20;
+    private int BLOCK_IMAGE_SIZE = 60;
+    public int BOARD_WIDTH = 10;
+    public int BOARD_HEIGHT = 20;
 
     Paint mPaint;
 
@@ -36,12 +35,25 @@ public class PlayerUIForN8 extends PlayerUI {
     Bitmap playBtn;
     Bitmap pauseBtn;
 
-    Bitmap[] mTile   = new Bitmap[10];
+    Bitmap[] mTile = new Bitmap[10];
 
     boolean isLoadedImage = false;
+    private BoardProfile profile;
 
-    public PlayerUIForN8(Context context) {
+    TetrisButton bottomArrowBtn;
+    TetrisButton leftArrowBtn;
+    TetrisButton rightArrowBtn;
+    TetrisButton rotateArrowBtn;
+    TetrisButton downArrowBtn;
+    TetrisButton playArrowBtn;
+    TetrisButton pauseArrowBtn;
+    TetrisButton startButton;
+    TetrisButton playButton;
+    TetrisButton gameoverButton;
+
+    public PlayerUIForN8(Context context, BoardProfile profile) {
         mContext = context;
+        this.profile = profile;
         init();
     }
 
@@ -53,13 +65,13 @@ public class PlayerUIForN8 extends PlayerUI {
 
         int i = 0;
         int j = 0;
-        int startX = 80;
-        int startY = 80;
+        int startX = profile.startX;
+        int startY = profile.startY;
 
         int width = player.getWidth();
         int height = player.getHeight();
 
-        canvas.drawBitmap(mGameBack, null, new Rect(0, 0, N8_width, N8_height), null);
+        canvas.drawBitmap(mGameBack, null, new Rect(0, 0, profile.screenWidth(), profile.screenHeight()), null);
 
         Paint paint = new Paint();
         paint.setAlpha(128);
@@ -85,41 +97,23 @@ public class PlayerUIForN8 extends PlayerUI {
                 }
             }
         }
+
         mPaint.setTextSize(BLOCK_IMAGE_SIZE);
+        canvas.drawText("Score", startX + (BOARD_WIDTH+1)*BLOCK_IMAGE_SIZE, startY + (BOARD_HEIGHT-2)*BLOCK_IMAGE_SIZE, mPaint);
+        mPaint.setTextSize((int)(BLOCK_IMAGE_SIZE * 0.8));
+        canvas.drawText(Integer.toString(player.getScore()),startX + (BOARD_WIDTH+1)*BLOCK_IMAGE_SIZE, startY + (BOARD_HEIGHT-1)*BLOCK_IMAGE_SIZE, mPaint);
+        mPaint.setTextSize(BLOCK_IMAGE_SIZE);
+        canvas.drawText("High", startX + (BOARD_WIDTH+1)*BLOCK_IMAGE_SIZE, startY + (BOARD_HEIGHT-4)*BLOCK_IMAGE_SIZE, mPaint);
+        mPaint.setTextSize((int)(BLOCK_IMAGE_SIZE * 0.8));
+        canvas.drawText(Integer.toString(player.getHighScore()), startX + (BOARD_WIDTH+1)*BLOCK_IMAGE_SIZE, startY + (BOARD_HEIGHT-3)*BLOCK_IMAGE_SIZE, mPaint);
 
-        canvas.drawText("Score", 760, 700, mPaint);
-        canvas.drawText(Integer.toString(player.getScore()), 760, 760, mPaint);
-        canvas.drawText("Line", 760, 820, mPaint);
-        canvas.drawText(Integer.toString(player.getRemovedLineCount()), 760, 880, mPaint);
-        canvas.drawText("High Score : " + Integer.toString(player.getHighScore()), startX, startY + 1620, mPaint);
+        canvas.drawBitmap(bottomArrow, null, bottomArrowBtn.toRect(), null);
 
+        canvas.drawBitmap(leftArrow, null, leftArrowBtn.toRect(), null);
+        canvas.drawBitmap(downArrow, null, downArrowBtn.toRect(), null);
+        canvas.drawBitmap(rotateArrow, null, rotateArrowBtn.toRect() , null);
+        canvas.drawBitmap(rightArrow, null, rightArrowBtn.toRect(), null);
 
-        canvas.drawBitmap(leftArrow, null,
-                new Rect(startX,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
-                        startX+200,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-        canvas.drawBitmap(bottomArrow, null,
-                new Rect(startX+250,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
-                        startX+450,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-        canvas.drawBitmap(rightArrow, null,
-                new Rect(startX+500,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
-                        startX+700,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-        canvas.drawBitmap(rotateArrow, null,
-                new Rect(startX+750,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,
-                        startX+950,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100 + 200), null);
-
-        canvas.drawBitmap(downArrow, null,
-                new Rect(startX+750,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT - 200,
-                        startX+950,
-                        startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT), null);
 
         if (player == null) {
             Log.d("Tetris", "Tetris is null");
@@ -127,21 +121,11 @@ public class PlayerUIForN8 extends PlayerUI {
         }
 
         if (player.isIdleState()) {
-            canvas.drawBitmap(mGameStart, 190, 400, null);
-
-            canvas.drawBitmap(playBtn, null,
-                    new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
-                            startY,
-                            startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
-                            startY + 200), null);
+            canvas.drawBitmap(mGameStart, null, startButton.toRect(), null);
+            canvas.drawBitmap(playBtn, null, playArrowBtn.toRect(), null);
         } else if (player.isGameOverState()) {
-            canvas.drawBitmap(mGameOver, 190, 400, null);
-
-            canvas.drawBitmap(playBtn, null,
-                    new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
-                            startY,
-                            startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
-                            startY + 200), null);
+            canvas.drawBitmap(mGameOver, null, gameoverButton.toRect(), null);
+            canvas.drawBitmap(playBtn, null, playArrowBtn.toRect(), null);
         } else if (player.isPlayState()) {
 
             if (player.isEnableShadow()) {
@@ -153,25 +137,16 @@ public class PlayerUIForN8 extends PlayerUI {
             onDrawBlock(canvas, block, startX, startY);
 
             Tetrominos nextTetrominos = player.getNextBlock();
-            int nStartX = 600;
+            int nStartX = startX + profile.blockSize() * (BOARD_WIDTH - 2);
             int nStartY = startY + 5 * BLOCK_IMAGE_SIZE;
             onDrawBlock(canvas, nextTetrominos, nStartX, nStartY);
 
-            canvas.drawBitmap(pauseBtn, null,
-                    new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
-                            startY,
-                            startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
-                            startY + 200), null);
+            canvas.drawBitmap(pauseBtn, null, pauseArrowBtn.toRect(), null);
         } else if (player.isPauseState()) {
-            canvas.drawBitmap(mGameStart, 190, 400, null);
-            canvas.drawBitmap(playBtn, null,
-                    new Rect(startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100,
-                            startY,
-                            startX + BLOCK_IMAGE_SIZE * BOARD_WIDTH + 100 + 200,
-                            startY + 200), null);
-
+            canvas.drawBitmap(mGameStart, null, startButton.toRect(), null);
+            canvas.drawBitmap(playBtn, null, playArrowBtn.toRect(), null);
             mPaint.setTextSize(30);
-            canvas.drawText("[" + screenWidth + "x" + screenHeight +"]", 800, 1700, mPaint);
+            canvas.drawText("[" + screenWidth + "x" + screenHeight + "]", startX, (int)(startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 1)), mPaint);
         }
     }
 
@@ -184,6 +159,31 @@ public class PlayerUIForN8 extends PlayerUI {
         mPaint.setAntiAlias(true);
 
         isLoadedImage = true;
+
+        BLOCK_IMAGE_SIZE = profile.blockSize();
+        BOARD_WIDTH = profile.boardWidth;
+        BOARD_HEIGHT = profile.boardHeight;
+
+        initButton();
+    }
+
+    private void initButton() {
+        int startX = profile.startX;
+        int startY = profile.startY;
+
+        bottomArrowBtn = new TetrisButton("BottomArrow", 4, startX + BLOCK_IMAGE_SIZE * 4, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 1),  profile.buttonSize(), profile.buttonSize());
+
+        leftArrowBtn = new TetrisButton("LeftArrow", 0, startX, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 5),  profile.buttonSize(), profile.buttonSize());
+        downArrowBtn = new TetrisButton("DownArrow", 1, startX + BLOCK_IMAGE_SIZE * 4, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 5),  profile.buttonSize(), profile.buttonSize());
+        rotateArrowBtn = new TetrisButton("RotateArrow", 2, startX + BLOCK_IMAGE_SIZE * 8, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 5),  profile.buttonSize(), profile.buttonSize());
+        rightArrowBtn = new TetrisButton("RightArrow", 3, startX + BLOCK_IMAGE_SIZE * 12, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 5),  profile.buttonSize(), profile.buttonSize());
+
+        playArrowBtn = new TetrisButton("PlayArrow", 5, startX + BLOCK_IMAGE_SIZE * 12, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 1),  profile.buttonSize(), profile.buttonSize());
+        pauseArrowBtn = new TetrisButton("PlayArrow", 6, startX + BLOCK_IMAGE_SIZE * 12, startY + BLOCK_IMAGE_SIZE * (BOARD_HEIGHT + 1),  profile.buttonSize(), profile.buttonSize());
+
+        startButton = new TetrisButton("StartButton", 7, startX + BLOCK_IMAGE_SIZE * 4, startY + BLOCK_IMAGE_SIZE * 9,  BLOCK_IMAGE_SIZE * 6, BLOCK_IMAGE_SIZE * 3);
+        playButton = new TetrisButton("PlayButton", 8, startX + BLOCK_IMAGE_SIZE * 4, startY + BLOCK_IMAGE_SIZE * 9,  BLOCK_IMAGE_SIZE * 6, BLOCK_IMAGE_SIZE * 3);
+        gameoverButton = new TetrisButton("GameoverButton", 9, startX + BLOCK_IMAGE_SIZE * 4, startY + BLOCK_IMAGE_SIZE * 9,  BLOCK_IMAGE_SIZE * 6, BLOCK_IMAGE_SIZE * 3);
     }
 
     private void loadImage() {
