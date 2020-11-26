@@ -15,7 +15,7 @@ import com.chobocho.tetris.Score;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class TetrisViewForN8 extends View implements PlayerObserver {
+public class TetrisView extends View implements PlayerObserver {
     private String LOG_TAG = this.getClass().getName();
     private Context mContext;
     private Player player;
@@ -30,7 +30,7 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
     private Handler playerHandler;
     private BoardProfile profile;
 
-    public TetrisViewForN8(Context context, Player player, BoardProfile profile) {
+    public TetrisView(Context context, Player player, BoardProfile profile) {
         super(context);
         this.mContext = context;
         this.profile = profile;
@@ -40,8 +40,8 @@ public class TetrisViewForN8 extends View implements PlayerObserver {
         loadHIghScore();
 
         this.player = player;
-        playerInput = new PlayerInputImplForN8(profile);
-        playerUI = new PlayerUIForN8(mContext, profile);
+        playerInput = new PlayerInputImpl(profile);
+        playerUI = new PlayerDrawImpl(mContext, profile);
         playerScore = new PlayerScoreImpl();
         playerScore.setHighScore(this.highScore);
 

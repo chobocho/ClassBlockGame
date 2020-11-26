@@ -5,7 +5,7 @@ import android.util.Log;
 import com.chobocho.player.PlayerInput;
 import com.chobocho.player.TetrisButton;
 
-public class PlayerInputImplForN8 extends PlayerInput {
+public class PlayerInputImpl extends PlayerInput {
     private final String TAG = this.getClass().getName();
     BoardProfile profile;
 
@@ -22,7 +22,7 @@ public class PlayerInputImplForN8 extends PlayerInput {
     TetrisButton gameoverButton;
 
 
-    public PlayerInputImplForN8(BoardProfile profile) {
+    public PlayerInputImpl(BoardProfile profile) {
         this.profile = profile;
         startX = profile.startX;
         startY = profile.startY;

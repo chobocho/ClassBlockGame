@@ -8,7 +8,7 @@ import com.chobocho.player.Player;
 import com.chobocho.player.PlayerImpl;
 
 public class ChoboTetrisActivity extends Activity {
-	TetrisViewForN8 twN8;
+	TetrisView twN8;
 	BoardProfile profile;
 
 	/** Called when the activity is first created. */
@@ -23,7 +23,7 @@ public class ChoboTetrisActivity extends Activity {
 	    Log.e("ChoboTetris", "W" + screenWidth + " H" + screenHeight + " B" + profile.blockSize());
 
 		Player player = new PlayerImpl(profile);
-		twN8 = new TetrisViewForN8(this, player, profile);
+		twN8 = new TetrisView(this, player, profile);
 		setContentView(twN8);
 	}
 

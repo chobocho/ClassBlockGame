@@ -15,7 +15,7 @@ import com.chobocho.tetris.R;
 import com.chobocho.tetris.Tetris;
 import com.chobocho.tetris.Tetrominos;
 
-public class PlayerUIForN8 extends PlayerUI {
+public class PlayerDrawImpl extends PlayerUI {
     private Context mContext;
     private int BLOCK_IMAGE_SIZE = 60;
     public int BOARD_WIDTH = 10;
@@ -51,7 +51,7 @@ public class PlayerUIForN8 extends PlayerUI {
     TetrisButton playButton;
     TetrisButton gameoverButton;
 
-    public PlayerUIForN8(Context context, BoardProfile profile) {
+    public PlayerDrawImpl(Context context, BoardProfile profile) {
         mContext = context;
         this.profile = profile;
         init();
